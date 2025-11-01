@@ -1,0 +1,420 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+*{
+    font-family: 'Quicksand', sans-serif;
+}
+
+a{
+    text-decoration: none;
+    color: #fff;
+}
+
+body{
+    color: #fff;
+    background-color: #e9ff99;
+    background-image:
+        radial-gradient(at 9% 89%, hsla(215, 90%, 73%, 1) 0px, transparent 50%),
+        radial-gradient(at 72% 6%, hsla(331, 74%, 64%, 1) 0px, transparent 50%),
+        radial-gradient(at 24% 19%, hsla(14, 90%, 74%, 1) 0px, transparent 50%),
+        radial-gradient(at 65% 6%, hsla(6, 79%, 76%, 1) 0px, transparent 50%),
+        radial-gradient(at 20% 98%, hsla(316, 72%, 64%, 1) 0px, transparent 50%),
+        radial-gradient(at 44% 9%, hsla(40, 96%, 77%, 1) 0px, transparent 50%),
+        radial-gradient(at 10% 9%, hsla(76, 65%, 63%, 1) 0px, transparent 50%);
+    min-height: 100vh;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+}
+
+.glass-container{
+    display: block;
+    max-width: 72vw;
+    margin-top: 10vh;
+    margin-bottom: 30px;
+    background: rgba(0, 0, 0, 0.56);
+    padding: 50px;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(11.6px);
+    -webkit-backdrop-filter: blur(11.6px);
+}
+
+.logo{
+    display: inline-block;
+    font-size: 30px;
+    font-weight: 600;
+    margin-top: -10px;
+}
+
+ul.nav-links{
+    margin: 0;
+    float: right;
+    display: flex;
+    list-style: none;
+}
+
+li.nav-link{
+    display: inline-block;
+    margin-left: 30px;
+    font-size: 17px;
+    font-weight: 300;
+}
+
+.content{
+    display: flex;
+    width: 100%;
+}
+
+.main{
+    margin-top: 10vh;
+    display: inline-block;
+    padding: 20px;
+}
+
+.main h2{
+    font-size: 35px;
+}
+
+.main p{
+    font-size: 16px;
+    line-height: 23px;
+}
+
+button{
+    margin-top: 10px;
+    width: 100%;
+    height: 40px;
+    font-size: 15px;
+    color: #fff;
+    background-color: transparent;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover{
+    border-color: #2668db;
+    background-color: #2668db;
+}
+
+.image-wrapper{
+    display: flex;
+    margin-top: 5vh;
+    position: relative;
+}
+
+.image-wrapper img{
+    max-width: 500px;
+}
+
+.attrebute{
+    position: absolute;
+    bottom: 20px;
+    right: 0;
+    font-size: 12px;
+}
+
+@media screen and (max-width: 1075px) {
+    .content{
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .logo{
+        font-size: 22px;
+    }
+    li.nav-link{
+        font-size: 13px;
+    }
+    .main h2{
+        font-size: 28px;
+    }
+    .main p{
+        font-size: 15px;
+    }
+    button{
+        font-size: 13px;
+    }
+    .image-wrapper img{
+        max-width: 400px;
+    }
+}
+
+/* --- Contact Page Specific Styling --- */
+
+.contact-content {
+    /* Override flex-direction to keep the content centered and flowing downwards */
+    flex-direction: column; 
+    align-items: center;
+    padding-top: 50px;
+}
+
+.contact-main {
+    text-align: center;
+    max-width: 500px; /* Limit width for better readability of contact info */
+    margin-top: 5vh;
+    display: block; /* Make it a block element to center text-align */
+    padding: 20px;
+}
+
+.contact-info {
+    margin: 30px 0;
+    line-height: 2.5; /* Increase line height for better spacing */
+    text-align: left; /* Align text left within the info box */
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle white border for separation */
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.2); /* Slightly darker background inside the glass container */
+}
+
+.contact-info p {
+    margin: 5px 0;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.contact-info a {
+    /* Style links to stand out more */
+    color: #99ccff; 
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+    color: #2668db; /* Same hover color as the button for consistency */
+}
+
+.contact-message {
+    margin-top: 20px;
+    font-size: 16px;
+    line-height: 23px;
+    text-align: center;
+}
+
+/* Ensure the main heading is styled correctly */
+.contact-main h2 {
+    font-size: 35px;
+    margin-bottom: 20px;
+}
+
+/* Media Query Adjustments for Contact Page */
+@media screen and (max-width: 720px) {
+    .contact-info p {
+        font-size: 15px;
+    }
+}
+
+
+/* --- About Page Specific Styling --- */
+
+.about-content {
+    /* Ensure content flows nicely vertically */
+    flex-direction: column; 
+    align-items: center;
+    padding-top: 50px;
+}
+
+.about-main {
+    max-width: 800px; /* Wider content area for detailed text */
+    padding: 20px;
+    margin-top: 5vh;
+    text-align: left; /* Align text left for paragraph readability */
+}
+
+.about-main h2 {
+    font-size: 35px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.about-main p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+.skills-section {
+    margin: 40px 0;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.skills-section h3 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.skills-list span {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background 0.3s ease;
+}
+
+.skills-list span:hover {
+    background: #2668db; /* Match your button hover color */
+    border-color: #2668db;
+}
+
+/* Reusing your button style for the CTA link */
+.cta-button {
+    display: block;
+    width: 250px;
+    height: 40px;
+    line-height: 40px; /* Vertically center text */
+    text-align: center;
+    margin: 30px auto 0;
+    font-size: 15px;
+    color: #fff;
+    background-color: transparent;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    border-color: #2668db;
+    background-color: #2668db;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 600px) {
+    .about-main h2 {
+        font-size: 28px;
+    }
+    .about-main p {
+        font-size: 16px;
+    }
+    .skills-list span {
+        font-size: 13px;
+    }
+}
+
+/* --- Projects Page Specific Styling --- */
+
+.projects-content {
+    /* Ensure content flows nicely vertically */
+    flex-direction: column; 
+    align-items: center;
+    padding-top: 50px;
+}
+
+.projects-main {
+    max-width: 90vw; /* Wider content area for the grid */
+    padding: 20px;
+    margin-top: 5vh;
+}
+
+.projects-main h2 {
+    font-size: 35px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.projects-grid {
+    display: grid;
+    /* Create a responsive grid: min 300px per column, max 3 columns */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.project-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; 
+    text-align: center;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(38, 104, 219, 0.4); /* Subtle blue glow on hover */
+}
+
+.project-card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.project-card .description {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    flex-grow: 1; /* Allows description to take up available space */
+}
+
+.github-link {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    margin-top: 15px;
+    font-size: 15px;
+    background-color: transparent;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-items: center;
+}
+
+.github-link:hover {
+    border-color: #2668db;
+    background-color: #2668db;
+}
+
+.github-link i {
+    margin-right: 8px;
+}
+
+/* For projects with multiple links (like Data Structures) */
+.link-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+.link-group .github-link {
+    flex: 1;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 720px) {
+    .projects-main h2 {
+        font-size: 28px;
+    }
+    .projects-grid {
+        grid-template-columns: 1fr; /* Stack cards vertically on small screens */
+    }
+}
