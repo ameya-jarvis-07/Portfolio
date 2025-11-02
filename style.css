@@ -1,15 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
-*{
+/* --- Global Styles --- */
+* {
     font-family: 'Quicksand', sans-serif;
+    box-sizing: border-box; /* Crucial for reliable padding/width calculations */
 }
 
-a{
+a {
     text-decoration: none;
     color: #fff;
 }
 
-body{
+body {
     color: #fff;
     background-color: #e9ff99;
     background-image:
@@ -23,69 +25,79 @@ body{
     min-height: 100vh;
 }
 
-.container{
+.container {
     display: flex;
     justify-content: center;
 }
 
-.glass-container{
+.glass-container {
     display: block;
-    max-width: 90vw;
-    margin-top: 5vh;
+    max-width: 72vw; /* Default for desktop */
+    margin-top: 10vh; /* Default for desktop */
     margin-bottom: 30px;
     background: rgba(0, 0, 0, 0.56);
-    padding: 50px;
+    padding: 50px; /* Default padding */
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(11.6px);
     -webkit-backdrop-filter: blur(11.6px);
 }
 
-.logo{
+.logo {
     display: inline-block;
     font-size: 30px;
     font-weight: 600;
     margin-top: -10px;
 }
 
-ul.nav-links{
+.navbar {
+    /* Clear float issue for general desktop layout */
+    overflow: hidden; 
+}
+
+ul.nav-links {
     margin: 0;
     float: right;
     display: flex;
     list-style: none;
 }
 
-li.nav-link{
+li.nav-link {
     display: inline-block;
     margin-left: 30px;
     font-size: 17px;
     font-weight: 300;
 }
 
-.content{
+.content {
     display: flex;
     width: 100%;
 }
 
-.main{
+.main {
     margin-top: 10vh;
     display: inline-block;
     padding: 20px;
 }
 
-.main h2{
+.main h2 {
     font-size: 35px;
 }
 
-.main p{
+.main p {
     font-size: 16px;
     line-height: 23px;
 }
 
-button{
+/* Base style for buttons and CTA links */
+.cta-button, button {
+    display: block;
     margin-top: 10px;
     width: 100%;
+    max-width: 250px; /* Limit width for desktop CTA buttons */
     height: 40px;
+    line-height: 40px; /* Center text vertically */
+    text-align: center;
     font-size: 15px;
     color: #fff;
     background-color: transparent;
@@ -93,82 +105,62 @@ button{
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
+    margin-left: 0; /* Override default block centering */
 }
 
-button:hover{
+button:hover, .cta-button:hover {
     border-color: #2668db;
     background-color: #2668db;
 }
 
-.image-wrapper{
+/* Specific centering for 'Get Started' button/link on index.html */
+.main .cta-button, .main button {
+    margin-left: 20px; /* Keep left alignment for index page on desktop */
+}
+
+
+.image-wrapper {
     display: flex;
     margin-top: 5vh;
     position: relative;
+    /* Removed margin-left to allow centering in mobile view */
 }
 
-.image-wrapper img{
+.image-wrapper img {
     max-width: 500px;
 }
 
-.attrebute{
+.attrebute {
     position: absolute;
     bottom: 20px;
     right: 0;
     font-size: 12px;
 }
 
-@media screen and (max-width: 1075px) {
-    .content{
-        flex-direction: column;
-    }
-}
-
-@media screen and (max-width: 720px) {
-    .logo{
-        font-size: 22px;
-    }
-    li.nav-link{
-        font-size: 13px;
-    }
-    .main h2{
-        font-size: 28px;
-    }
-    .main p{
-        font-size: 15px;
-    }
-    button{
-        font-size: 13px;
-    }
-    .image-wrapper img{
-        max-width: 400px;
-    }
-}
-
 /* --- Contact Page Specific Styling --- */
 
 .contact-content {
-    /* Override flex-direction to keep the content centered and flowing downwards */
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     padding-top: 50px;
 }
 
 .contact-main {
     text-align: center;
-    max-width: 500px; /* Limit width for better readability of contact info */
+    max-width: 500px;
     margin-top: 5vh;
-    display: block; /* Make it a block element to center text-align */
+    display: block;
     padding: 20px;
 }
 
 .contact-info {
     margin: 30px 0;
-    line-height: 2.5; /* Increase line height for better spacing */
-    text-align: left; /* Align text left within the info box */
+    line-height: 2.5;
+    text-align: left;
     padding: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle white border for separation */
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 10px;
-    background: rgba(0, 0, 0, 0.2); /* Slightly darker background inside the glass container */
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .contact-info p {
@@ -178,14 +170,13 @@ button:hover{
 }
 
 .contact-info a {
-    /* Style links to stand out more */
-    color: #99ccff; 
+    color: #99ccff;
     text-decoration: underline;
     transition: color 0.3s ease;
 }
 
 .contact-info a:hover {
-    color: #2668db; /* Same hover color as the button for consistency */
+    color: #2668db;
 }
 
 .contact-message {
@@ -195,34 +186,25 @@ button:hover{
     text-align: center;
 }
 
-/* Ensure the main heading is styled correctly */
 .contact-main h2 {
     font-size: 35px;
     margin-bottom: 20px;
-}
-
-/* Media Query Adjustments for Contact Page */
-@media screen and (max-width: 720px) {
-    .contact-info p {
-        font-size: 15px;
-    }
 }
 
 
 /* --- About Page Specific Styling --- */
 
 .about-content {
-    /* Ensure content flows nicely vertically */
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     padding-top: 50px;
 }
 
 .about-main {
-    max-width: 800px; /* Wider content area for detailed text */
+    max-width: 800px;
     padding: 20px;
     margin-top: 5vh;
-    text-align: left; /* Align text left for paragraph readability */
+    text-align: left;
 }
 
 .about-main h2 {
@@ -273,56 +255,21 @@ button:hover{
 }
 
 .skills-list span:hover {
-    background: #2668db; /* Match your button hover color */
+    background: #2668db;
     border-color: #2668db;
 }
 
-/* Reusing your button style for the CTA link */
-.cta-button {
-    display: block;
-    width: 250px;
-    height: 40px;
-    line-height: 40px; /* Vertically center text */
-    text-align: center;
-    margin: 30px auto 0;
-    font-size: 15px;
-    color: #fff;
-    background-color: transparent;
-    border: 1px solid #fff;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
 
-.cta-button:hover {
-    border-color: #2668db;
-    background-color: #2668db;
-}
-
-/* Mobile adjustments */
-@media screen and (max-width: 600px) {
-    .about-main h2 {
-        font-size: 28px;
-    }
-    .about-main p {
-        font-size: 16px;
-    }
-    .skills-list span {
-        font-size: 13px;
-    }
-}
-
-/* --- Projects Page Specific Styling --- */
+/* --- Projects Page Specific Styling (Fixes included) --- */
 
 .projects-content {
-    /* Ensure content flows nicely vertically */
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     padding-top: 50px;
 }
 
 .projects-main {
-    max-width: 90vw; /* Wider content area for the grid */
+    max-width: 90vw;
     padding: 20px;
     margin-top: 5vh;
 }
@@ -335,7 +282,6 @@ button:hover{
 
 .projects-grid {
     display: grid;
-    /* Create a responsive grid: min 300px per column, max 3 columns */
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
 }
@@ -349,16 +295,18 @@ button:hover{
     padding: 25px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    /* FIX: Centering content inside the card */
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center; 
+    align-items: center;
     text-align: center;
+    justify-content: space-between;
 }
 
 .project-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(38, 104, 219, 0.4); /* Subtle blue glow on hover */
+    box-shadow: 0 12px 40px rgba(38, 104, 219, 0.4);
 }
 
 .project-card h3 {
@@ -372,12 +320,13 @@ button:hover{
     font-size: 16px;
     line-height: 1.5;
     margin-bottom: 20px;
-    flex-grow: 1; /* Allows description to take up available space */
+    flex-grow: 1;
 }
 
 .github-link {
     display: block;
-    width: 100%;
+    width: 200px; /* FIX: Set a specific width to center it */
+    max-width: 100%;
     text-align: center;
     padding: 10px;
     margin-top: 15px;
@@ -387,7 +336,7 @@ button:hover{
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
-    align-items: center;
+    align-self: center; /* Ensure it is centered within the flex container (project-card) */
 }
 
 .github-link:hover {
@@ -399,22 +348,140 @@ button:hover{
     margin-right: 8px;
 }
 
-/* For projects with multiple links (like Data Structures) */
 .link-group {
     display: flex;
     gap: 10px;
-    justify-content: center;
+    justify-content: center; /* FIX: Centers the group of buttons */
+    width: 100%;
 }
 .link-group .github-link {
     flex: 1;
+    width: auto; /* Reset individual link width in a group */
 }
 
-/* Mobile adjustments */
+/* --- Responsive Media Queries (Fixed) --- */
+
+/* Tablet/Smaller Desktop Adjustment */
+@media screen and (max-width: 1075px) {
+    .content {
+        flex-direction: column;
+    }
+}
+
+/* Mobile Layout Fixes (Max Width 720px) */
 @media screen and (max-width: 720px) {
-    .projects-main h2 {
+    /* Step 1: Fix Glass Container and Navigation */
+    .glass-container {
+        max-width: 95vw; /* Use more screen width */
+        margin-top: 5vh;
+        padding: 20px; /* Reduce padding for mobile */
+    }
+
+    .navbar {
+        display: flex;
+        flex-direction: column; /* Stack logo and nav links vertically */
+        align-items: center;
+        text-align: center;
+    }
+
+    .logo {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 24px;
+        float: none;
+    }
+
+    ul.nav-links {
+        float: none;
+        display: flex;
+        flex-wrap: wrap; /* Allow links to wrap */
+        justify-content: center;
+        margin-bottom: 15px;
+    }
+
+    li.nav-link {
+        margin: 0 10px 10px; /* Reduced margins for tighter fit */
+        font-size: 14px;
+    }
+
+    /* Step 2: Fix Main Content (Home Page) */
+    .main {
+        margin-top: 5vh;
+        padding: 0;
+        text-align: center;
+    }
+
+    .main h2 {
+        font-size: 30px;
+    }
+
+    .main p {
+        font-size: 15px;
+    }
+    
+    /* Center the CTA Button/Link */
+    .cta-button, button {
+        margin: 10px auto; /* Center block element */
+        width: 80%; /* Give it some breathing room */
+        max-width: 250px;
+    }
+    
+    /* Remove explicit left alignment on index page button for mobile */
+    .main .cta-button, .main button {
+        margin: 10px auto;
+    }
+    
+    /* Step 3: Fix Image */
+    .image-wrapper {
+        margin-top: 5vh;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .image-wrapper img {
+        max-width: 90vw;
+        width: 100%;
+        height: auto;
+    }
+
+    .attrebute {
+        position: static; /* Attribution below image */
+        text-align: center;
+        margin-top: 10px;
+        font-size: 10px;
+    }
+    
+    /* Page Specific Mobile Adjustments */
+    .projects-grid {
+        grid-template-columns: 1fr; /* Stack cards vertically */
+    }
+    .about-main h2, .contact-main h2 {
         font-size: 28px;
     }
-    .projects-grid {
-        grid-template-columns: 1fr; /* Stack cards vertically on small screens */
+    .about-main p, .contact-info p {
+        font-size: 16px;
+    }
+    .skills-list span {
+        font-size: 13px;
+    }
+}
+
+/* Mobile adjustments for contact page (Smaller than 720px) */
+@media screen and (max-width: 600px) {
+    .about-main h2 {
+        font-size: 28px;
+    }
+    .about-main p {
+        font-size: 16px;
+    }
+    .skills-list span {
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    /* Tighter spacing for very small screens */
+    li.nav-link {
+        margin: 0 6px 10px;
     }
 }
