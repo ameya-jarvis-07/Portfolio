@@ -30,8 +30,8 @@ body{
 
 .glass-container{
     display: block;
-    max-width: 72vw;
-    margin-top: 10vh;
+    max-width: 90vw;
+    margin-top: 5vh;
     margin-bottom: 30px;
     background: rgba(0, 0, 0, 0.56);
     padding: 50px;
