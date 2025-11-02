@@ -3,7 +3,7 @@
 /* --- Global Styles --- */
 * {
     font-family: 'Quicksand', sans-serif;
-    box-sizing: border-box; /* Crucial for reliable padding/width calculations */
+    box-sizing: border-box;
 }
 
 a {
@@ -51,7 +51,6 @@ body {
 }
 
 .navbar {
-    /* Clear float issue for general desktop layout */
     overflow: hidden; 
 }
 
@@ -64,7 +63,8 @@ ul.nav-links {
 
 li.nav-link {
     display: inline-block;
-    margin-left: 30px;
+    /* FIX: Reduced margin from 30px to 20px to prevent navigation links from wrapping on desktop at 100% zoom */
+    margin-left: 20px; 
     font-size: 17px;
     font-weight: 300;
 }
@@ -96,7 +96,7 @@ li.nav-link {
     width: 100%;
     max-width: 250px; /* Limit width for desktop CTA buttons */
     height: 40px;
-    line-height: 40px; /* Center text vertically */
+    line-height: 40px;
     text-align: center;
     font-size: 15px;
     color: #fff;
@@ -105,7 +105,7 @@ li.nav-link {
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-left: 0; /* Override default block centering */
+    margin-left: 0; 
 }
 
 button:hover, .cta-button:hover {
@@ -113,7 +113,6 @@ button:hover, .cta-button:hover {
     background-color: #2668db;
 }
 
-/* Specific centering for 'Get Started' button/link on index.html */
 .main .cta-button, .main button {
     margin-left: 20px; /* Keep left alignment for index page on desktop */
 }
@@ -123,7 +122,6 @@ button:hover, .cta-button:hover {
     display: flex;
     margin-top: 5vh;
     position: relative;
-    /* Removed margin-left to allow centering in mobile view */
 }
 
 .image-wrapper img {
@@ -260,7 +258,7 @@ button:hover, .cta-button:hover {
 }
 
 
-/* --- Projects Page Specific Styling (Fixes included) --- */
+/* --- Projects Page Specific Styling (Buttons Centered) --- */
 
 .projects-content {
     flex-direction: column;
@@ -325,7 +323,7 @@ button:hover, .cta-button:hover {
 
 .github-link {
     display: block;
-    width: 200px; /* FIX: Set a specific width to center it */
+    width: 200px; /* Set a specific width to allow centering */
     max-width: 100%;
     text-align: center;
     padding: 10px;
@@ -336,7 +334,7 @@ button:hover, .cta-button:hover {
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
-    align-self: center; /* Ensure it is centered within the flex container (project-card) */
+    align-self: center; 
 }
 
 .github-link:hover {
@@ -351,12 +349,12 @@ button:hover, .cta-button:hover {
 .link-group {
     display: flex;
     gap: 10px;
-    justify-content: center; /* FIX: Centers the group of buttons */
+    justify-content: center; /* Centers the group of buttons */
     width: 100%;
 }
 .link-group .github-link {
     flex: 1;
-    width: auto; /* Reset individual link width in a group */
+    width: auto; 
 }
 
 /* --- Responsive Media Queries (Fixed) --- */
@@ -374,7 +372,7 @@ button:hover, .cta-button:hover {
     .glass-container {
         max-width: 95vw; /* Use more screen width */
         margin-top: 5vh;
-        padding: 20px; /* Reduce padding for mobile */
+        padding: 20px; /* Reduced padding for mobile */
     }
 
     .navbar {
@@ -426,7 +424,6 @@ button:hover, .cta-button:hover {
         max-width: 250px;
     }
     
-    /* Remove explicit left alignment on index page button for mobile */
     .main .cta-button, .main button {
         margin: 10px auto;
     }
@@ -480,7 +477,7 @@ button:hover, .cta-button:hover {
 }
 
 @media screen and (max-width: 400px) {
-    /* Tighter spacing for very small screens */
+    /* Tighter spacing for very small screens to keep nav from wrapping */
     li.nav-link {
         margin: 0 6px 10px;
     }
