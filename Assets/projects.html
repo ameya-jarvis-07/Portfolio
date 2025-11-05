@@ -1,93 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Ameya's Portfolio</title>
     <link rel="stylesheet" href="../style.css">
-    <title>Ameya Ramteke | Projects</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
-
-    <div class="container">
-        <div class="glass-container">
-            <nav class="navbar">
-                <div class="logo"><a href="#">Ameya Ramteke</a></div>
-                <ul class="nav-links">
-                    <li class="nav-link"><a href="../index.html">Home</a></li>
-                    <li class="nav-link"><a href="about.html">About</a></li>
-                    <li class="nav-link"><a href="projects.html">Projects</a></li>
-                    <li class="nav-link"><a href="Resume.pdf">Resume</a></li>
-                    <li class="nav-link"><a href="contact.html">Contact Me</a></li>
-                </ul>
-            </nav>
-            <div class="content projects-content">
-                <div class="projects-main">
-                    <h2>My Portfolio of Work 💡</h2>
-
-                    <div class="projects-grid">
-                        
-                        <div class="project-card">
-                            <h3>Resume-Checker</h3>
-                            <p class="description">
-                                A system developed to parse, analyze, and score resumes, demonstrating skills in data extraction and analysis.
-                            </p>
-                            <a href="https://github.com/ameya-jarvis-07/Resume-Checker" target="_blank" class="github-link"><i class="fab fa-github"></i> GitHub Link </a>
-                        </div>
-                        
-                        <div class="project-card">
-                            <h3>Crime-Analysis-Demo</h3>
-                            <p class="description">
-                                A data analytics project analyzing crime datasets to identify patterns and trends, utilizing Python and data visualization techniques.
-                            </p>
-                            <a href="https://github.com/ameya-jarvis-07/Crime-Analysis-Demo" target="_blank" class="github-link"><i class="fab fa-github"></i> GitHub Link </a>
-                        </div>
-
-                        <div class="project-card">
-                            <h3>Account-Management-System</h3>
-                            <p class="description">
-                                A full-stack CRUD application created to manage user accounts, demonstrating skills in database management, backend logic, and UI development.
-                            </p>
-                            <a href="https://github.com/ameya-jarvis-07/Account-Management-System" target="_blank" class="github-link"><i class="fab fa-github"></i> GitHub Link </a>
-                        </div>
-
-                        <div class="project-card">
-                            <h3>Hunger-Bridge</h3>
-                            <p class="description">
-                                A socially-focused project designed to connect food donors with organizations to reduce food waste.
-                            </p>
-                            <a href="https://github.com/ameya-jarvis-07/Hunger-Bridge" target="_blank" class="github-link"><i class="fab fa-github"></i> GitHub Link </a>
-                        </div>
-                        
-                        <div class="project-card">
-                            <h3>Data Structures & OOP Practical</h3>
-                            <p class="description">
-                                Comprehensive repositories of practical coursework implementing fundamental Data Structures and Object-Oriented Programming concepts.
-                            </p>
-                            <div class="link-group">
-                                <a href="https://github.com/ameya-jarvis-07/DATA-STRUCTURE-PRACTICALS" target="_blank" class="github-link"><i class="fab fa-github"></i>DSA Link</a>
-                                <a href="https://github.com/ameya-jarvis-07/OOP-PRACTICALS" target="_blank" class="github-link"><i class="fab fa-github"></i>OOP Link</a>
-                            </div>
-                        </div>
-
-                        <div class="project-card">
-                            <h3>Foundational Application Development</h3>
-                            <p class="description">
-                                Applied algorithmic design, OOP, and data structure utilization to build application prototypes, demonstrating rapid logic implementation across multiple programming languages.
-                            </p>
-                            <a href="https://github.com/ameya-jarvis-07/Fundamental-Concepts" target="_blank" class="github-link"><i class="fab fa-github"></i> View Repository</a>
-                        </div>
-
-                    </div>
-                    <a href="Resume.pdf" class="cta-button">Veiw complete Resume!</a><a href="contact.html" class="cta-button">Contact Me!</a>
-                    
-                </div>
-            </div>
-        </div>
+    <!-- Animated Background -->
+    <div class="background-container">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="gradient-orb orb-4"></div>
+        <div class="gradient-orb orb-5"></div>
+        <div class="grid-overlay"></div>
     </div>
 
-</body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-code"></i>
+                <span class="logo-text">Ameya</span>
+            </div>
+        </div>
+        
+        <ul class="nav-links">
+            <li>
+                <a href="../index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span class="link-text">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="about.html" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    <span class="link-text">About</span>
+                </a>
+            </li>
+            <li>
+                <a href="projects.html" class="nav-link active">
+                    <i class="fas fa-briefcase"></i>
+                    <span class="link-text">Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="Resume.pdf" class="nav-link" target="_blank">
+                    <i class="fas fa-file-alt"></i>
+                    <span class="link-text">Resume</span>
+                </a>
+            </li>
+            <li>
+                <a href="contact.html" class="nav-link">
+                    <i class="fas fa-envelope"></i>
+                    <span class="link-text">Contact</span>
+                </a>
+            </li>
+        </ul>
 
+        <div class="sidebar-footer">
+            <a href="https://linktr.ee/ameya_jarvis" class="nav-link" target="_blank">
+                <i class="fa fa-link"></i>
+                <span class="link-text">LinkTree</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <section class="projects-page">
+            <h1 class="page-title">My Projects</h1>
+            
+            <!-- Projects Grid -->
+            <div class="projects-grid">
+                <!-- Resume Parser -->
+                <div class="project-card glass-card" data-category="ai">
+                    <div class="project-header">
+                        <div class="project-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3>Resume Checker</h3>
+                    </div>
+                    <div class="project-info">
+                        <p>A system developed to parse, analyze, and score resumes, demonstrating skills in data extraction and analysis.</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">NLP</span>
+                            <span class="tag">Data Analysis</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/ameya-jarvis-07/Resume-Checker" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> GitHub Link
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crime Data Analysis -->
+                <div class="project-card glass-card" data-category="data">
+                    <div class="project-header">
+                        <div class="project-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Crime Data Analytics</h3>
+                    </div>
+                    <div class="project-info">
+                        <p>A data analytics project analyzing crime datasets to identify patterns and trends, utilizing Python and data visualization techniques.</p>
+                        <div class="project-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Data Viz</span>
+                            <span class="tag">Analytics</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/ameya-jarvis-07/Crime-Analysis-Demo" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> GitHub Link
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CRUD Application -->
+                <div class="project-card glass-card" data-category="web">
+                    <div class="project-header">
+                        <div class="project-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h3>Account Management System</h3>
+                    </div>
+                    <div class="project-info">
+                        <p>A full-stack CRUD application created to manage user accounts, demonstrating skills in database management, backend logic, and UI development.</p>
+                        <div class="project-tags">
+                            <span class="tag">Full-Stack</span>
+                            <span class="tag">Database</span>
+                            <span class="tag">CRUD</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/ameya-jarvis-07/Account-Management-System" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> GitHub Link
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Food Donation -->
+                <div class="project-card glass-card" data-category="web">
+                    <div class="project-header">
+                        <div class="project-icon">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <h3>Food Donation Platform</h3>
+                    </div>
+                    <div class="project-info">
+                        <p>A socially-focused project designed to connect food donors with organizations to reduce food waste.</p>
+                        <div class="project-tags">
+                            <span class="tag">Social Impact</span>
+                            <span class="tag">Web App</span>
+                            <span class="tag">Full-Stack</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/ameya-jarvis-07/Hunger-Bridge" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> GitHub Link
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DSA Repository -->
+                <div class="project-card glass-card" data-category="programming">
+                    <div class="project-header">
+                        <div class="project-icon">
+                            <i class="fas fa-code-branch"></i>
+                        </div>
+                        <h3>Data Structures & OOP</h3>
+                    </div>
+                    <div class="project-info">
+                        <p>Comprehensive repositories of practical coursework implementing fundamental Data Structures and Object-Oriented Programming concepts.</p>
+                        <div class="project-tags">
+                            <span class="tag">DSA</span>
+                            <span class="tag">OOP</span>
+                            <span class="tag">Algorithms</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/ameya-jarvis-07/DATA-STRUCTURE-PRACTICALS" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> View DSA Repository
+                            </a>
+                            <a href="https://github.com/ameya-jarvis-07/OOP-PRACTICALS" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> View OOP Repository
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Application Prototypes -->
+                <div class="project-card glass-card" data-category="programming">
+                    <div class="project-header">
+                        <div class="project-icon">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h3>Foundational Application Development</h3>
+                    </div>
+                    <div class="project-info">
+                        <p>Applied algorithmic design, OOP, and data structure utilization to build application prototypes, demonstrating rapid logic implementation across multiple programming languages.</p>
+                        <div class="project-tags">
+                            <span class="tag">Prototyping</span>
+                            <span class="tag">Multi-Lang</span>
+                            <span class="tag">Algorithms</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://ameya-jarvis-07.github.io/Fundamental-Concepts/" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i> View Projects
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+</body>
 </html>

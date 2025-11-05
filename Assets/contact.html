@@ -1,44 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Ameya's Portfolio</title>
     <link rel="stylesheet" href="../style.css">
-    <title>Ameya Ramteke | Contact</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
-
-    <div class="container">
-        <div class="glass-container">
-            <nav class="navbar">
-                <div class="logo"><a href="#">Ameya Ramteke</a></div>
-                <ul class="nav-links">
-                    <li class="nav-link"><a href="../index.html">Home</a></li>
-                    <li class="nav-link"><a href="about.html">About</a></li>
-                    <li class="nav-link"><a href="projects.html">Projects</a></li>
-                    <li class="nav-link"><a href="Resume.pdf">Resume</a></li>
-                    <li class="nav-link"><a href="contact.html">Contact Me</a></li>
-                </ul>
-            </nav>
-            <div class="content contact-content">
-                <div class="contact-main">
-                    <h2>Get In Touch 🤝</h2>
-                    <div class="contact-info">
-                        <p>📞 Contact Number: <a href="tel:+919422651580">Phone: </a></p>
-                        <p>📧 Email: <a href="mailto:ameyaramteke07.work@gmail.com">Email: </a></p>
-                        <p>🔗 Linktree/Socials: <a href="https://linktr.ee/ameya_jarvis" target="_blank">Linktree</a></p>
-                        <p>🔗 LinkedIn: <a href="https://in.linkedin.com/in/ameya-ramteke-1a8a55329" target="_blank">LinkedIn</a></p>
-                    </div>
-                    <p class="contact-message">
-                        I'm always open to discussing new projects, collaborations, or opportunities. Feel free to reach out!
-                    </p>
-                </div>
-            </div>
-        </div>
+    <!-- Animated Background -->
+    <div class="background-container">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="gradient-orb orb-4"></div>
+        <div class="gradient-orb orb-5"></div>
+        <div class="grid-overlay"></div>
     </div>
 
-</body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-code"></i>
+                <span class="logo-text">Ameya</span>
+            </div>
+        </div>
+        
+        <ul class="nav-links">
+            <li>
+                <a href="../index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span class="link-text">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="about.html" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    <span class="link-text">About</span>
+                </a>
+            </li>
+            <li>
+                <a href="projects.html" class="nav-link">
+                    <i class="fas fa-briefcase"></i>
+                    <span class="link-text">Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="Resume.pdf" class="nav-link" target="_blank">
+                    <i class="fas fa-file-alt"></i>
+                    <span class="link-text">Resume</span>
+                </a>
+            </li>
+            <li>
+                <a href="contact.html" class="nav-link active">
+                    <i class="fas fa-envelope"></i>
+                    <span class="link-text">Contact</span>
+                </a>
+            </li>
+        </ul>
 
+        <div class="sidebar-footer">
+            <a href="https://linktr.ee/ameya_jarvis" class="nav-link" target="_blank">
+                <i class="fa fa-link"></i>
+                <span class="link-text">LinkTree</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <section class="contact-section">
+            <h1 class="page-title">Get In Touch</h1>
+            
+            <div class="contact-container-grid">
+                <!-- Email Card -->
+                <div class="contact-info-card glass-card">
+                    <div class="info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Email</h3>
+                    <p>
+                        <a href="mailto:ameyaramteke07.work@gmail.com" target="_blank">
+                            ameyaramteke07.work@gmail.com
+                        </a>
+                    </p>
+                </div>
+
+                <!-- Location Card -->
+                <div class="contact-info-card glass-card">
+                    <div class="info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Location</h3>
+                    <p>Nagpur, India</p>
+                </div>
+
+                <!-- LinkTree Card -->
+                <div class="contact-info-card glass-card">
+                    <div class="info-icon">
+                        <i class="fa fa-link"></i>
+                    </div>
+                    <h3>LinkTree</h3>
+                    <p>
+                        <a href="https://linktr.ee/ameya_jarvis" target="_blank">
+                            ameya_jarvis
+                        </a>
+                    </p>
+                </div>
+
+                <!-- Social Links Card -->
+                <div class="contact-info-card glass-card">
+                    <div class="info-icon">
+                        <i class="fas fa-share-nodes"></i>
+                    </div>
+                    <h3>Connect With Me</h3>
+                    <div class="social-icons">
+                        <a href="http://www.linkedin.com/in/ameya-ramteke" target="_blank" class="social-icon">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://github.com/ameya-jarvis-07" target="_blank" class="social-icon">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../script.js"></script>
+</body>
 </html>

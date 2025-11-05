@@ -1,47 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ameya's Portfolio</title>
     <link rel="stylesheet" href="style.css">
-    <title>Jarvis Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
-
-    <div class="container">
-        <div class="glass-container">
-            <nav class="navbar">
-                <div class="logo"><a href="#">Ameya Ramteke</a></div>
-                <ul class="nav-links">
-                    <li class="nav-link"><a href="index.html">Home</a></li>
-                    <li class="nav-link"><a href="Assets/about.html">About</a></li>
-                    <li class="nav-link"><a href="Assets/projects.html">Projects</a></li>
-                    <li class="nav-link"><a href="Assets/Resume.pdf">Resume</a></li>
-                    <li class="nav-link"><a href="Assets/contact.html">Contact Me</a></li>
-                </ul>
-            </nav>
-            <div class="content">
-                <div class="main">
-                    <h2>Hey! 👋,<br>It's AMEYA</h2>
-                    <p>
-                        Hello! I'm Ameya Ramteke, a passionate programmer and developer dedicated to crafting innovative solutions and bringing ideas to life through code. Welcome to my portfolio!
-                    </p>
-                    <a href="Assets/about.html" class="cta-button">Get Started</a>
-                </div>
-                <div class="image-wrapper">
-                    <img src="image.png">
-                    <div class="attrebute">
-                        <a
-                            href="https://www.freepik.com/free-psd/marketing-concept-with-woman-rocketship_33417710.htm#page=2&query=3d%20illustration&position=32&from_view=search&track=ais">Image
-                            by Freepik</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Animated Background -->
+    <div class="background-container">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+        <div class="gradient-orb orb-4"></div>
+        <div class="gradient-orb orb-5"></div>
+        <div class="grid-overlay"></div>
     </div>
 
-</body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-code"></i>
+                <span class="logo-text">Ameya</span>
+            </div>
+        </div>
+        
+        <ul class="nav-links">
+            <li>
+                <a href="index.html" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    <span class="link-text">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="Assets/about.html" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    <span class="link-text">About</span>
+                </a>
+            </li>
+            <li>
+                <a href="Assets/projects.html" class="nav-link">
+                    <i class="fas fa-briefcase"></i>
+                    <span class="link-text">Projects</span>
+                </a>
+            </li>
+            <li>
+                <a href="Assets/Resume.pdf" class="nav-link" target="_blank">
+                    <i class="fas fa-file-alt"></i>
+                    <span class="link-text">Resume</span>
+                </a>
+            </li>
+            <li>
+                <a href="Assets/contact.html" class="nav-link">
+                    <i class="fas fa-envelope"></i>
+                    <span class="link-text">Contact</span>
+                </a>
+            </li>
+        </ul>
 
+        <div class="sidebar-footer">
+            <a href="https://linktr.ee/ameya_jarvis" class="nav-link" target="_blank">
+                <i class="fa fa-link"></i>
+                <span class="link-text">LinkTree</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Hero Section -->
+        <section class="hero-section glass-card">
+            <div class="hero-content">
+                <h1 class="hero-title">Hey! It's Ameya Ramteke</h1>
+                <p class="hero-description">
+                    Hello! I'm Ameya Ramteke, a passionate programmer and developer dedicated to crafting innovative solutions and bringing ideas to life through code. Welcome to my portfolio!
+                </p>
+            </div>
+        </section>
+
+        
+
+        <!-- Quick Links -->
+        <section class="quick-links-section">
+            <h2 class="section-title">Explore More</h2>
+            <div class="quick-links-grid">
+                <a href="Assets/about.html" class="quick-link-card glass-card">
+                    <i class="fas fa-user-circle"></i>
+                    <h3>About Me</h3>
+                    <p>Learn more about my background, education, and interests</p>
+                </a>
+                <a href="Assets/projects.html" class="quick-link-card glass-card">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>My Projects</h3>
+                    <p>View my latest work including AI, ML, and full-stack projects</p>
+                </a>
+                <a href="Assets/Resume.pdf" class="quick-link-card glass-card">
+                    <i class="fas fa-file-alt"></i>
+                    <h3>My Resume</h3>
+                    <p>View my complete Resume</p>
+                </a>
+                <a href="Assets/contact.html" class="quick-link-card glass-card">
+                    <i class="fas fa-paper-plane"></i>
+                    <h3>Contact Me</h3>
+                    <p>Get in touch for collaborations and opportunities</p>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
 </html>
