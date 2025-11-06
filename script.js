@@ -9,6 +9,13 @@ document.querySelectorAll('.nav-link').forEach(link => {
         
         // Add active class to clicked link
         this.classList.add('active');
+
+        // Close sidebar on mobile after clicking a link
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && window.innerWidth <= 1024) {
+            sidebar.classList.remove('mobile-open');
+            document.getElementById('mobile-overlay').style.display = 'none';
+        }
     });
 });
 
@@ -105,16 +112,52 @@ const sidebar = document.getElementById('sidebar');
 const mainContent = document.getElementById('mainContent');
 
 if (sidebar && mainContent) {
-    sidebar.addEventListener('mouseenter', () => {
-        mainContent.style.marginLeft = 'var(--sidebar-width-expanded)';
-        mainContent.style.width = 'calc(100% - var(--sidebar-width-expanded))';
-    });
+    const handleSidebarResize = () => {
+        // Only apply resize logic on desktop screens (window width > 1024px)
+        if (window.innerWidth > 1024) {
+            mainContent.classList.remove('mobile-sidebar-reset');
+            sidebar.addEventListener('mouseenter', () => {
+                mainContent.style.marginLeft = 'var(--sidebar-width-expanded)';
+                mainContent.style.width = 'calc(100% - var(--sidebar-width-expanded))';
+            });
+        
+            sidebar.addEventListener('mouseleave', () => {
+                mainContent.style.marginLeft = 'var(--sidebar-width-collapsed)';
+                mainContent.style.width = 'calc(100% - var(--sidebar-width-collapsed))';
+            });
+        } else {
+            // Cleanup desktop event listeners on mobile
+            mainContent.style.marginLeft = '';
+            mainContent.style.width = '';
+            mainContent.classList.add('mobile-sidebar-reset');
+            sidebar.removeEventListener('mouseenter', handleSidebarResize); // Simple way to remove the attached listeners
+            sidebar.removeEventListener('mouseleave', handleSidebarResize);
+        }
+    };
 
-    sidebar.addEventListener('mouseleave', () => {
-        mainContent.style.marginLeft = 'var(--sidebar-width-collapsed)';
-        mainContent.style.width = 'calc(100% - var(--sidebar-width-collapsed))';
-    });
+    // Run once on load and on resize
+    handleSidebarResize();
+    window.addEventListener('resize', handleSidebarResize);
 }
+
+
+// ** MOBILE MENU LOGIC **
+const menuToggle = document.getElementById('menuToggle');
+const sidebarOverlay = document.getElementById('mobile-overlay');
+
+if (menuToggle && sidebar && sidebarOverlay) {
+    const toggleMenu = () => {
+        sidebar.classList.toggle('mobile-open');
+        menuToggle.querySelector('i').className = sidebar.classList.contains('mobile-open') 
+            ? 'fas fa-times' // 'X' icon when open
+            : 'fas fa-bars'; // Hamburger icon when closed
+        sidebarOverlay.style.display = sidebar.classList.contains('mobile-open') ? 'block' : 'none';
+    };
+
+    menuToggle.addEventListener('click', toggleMenu);
+    sidebarOverlay.addEventListener('click', toggleMenu); // Close menu when clicking overlay
+}
+
 
 // Contact form submission
 const contactForm = document.getElementById('contactForm');

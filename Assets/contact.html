@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Animated Background -->
     <div class="background-container">
         <div class="gradient-orb orb-1"></div>
         <div class="gradient-orb orb-2"></div>
@@ -18,7 +17,12 @@
         <div class="grid-overlay"></div>
     </div>
 
-    <!-- Sidebar Navigation -->
+    <div class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <div class="sidebar-overlay" id="mobile-overlay"></div>
+
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="logo">
@@ -68,13 +72,11 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="main-content" id="mainContent">
         <section class="contact-section">
             <h1 class="page-title">Get In Touch</h1>
             
             <div class="contact-container-grid">
-                <!-- Email Card -->
                 <div class="contact-info-card glass-card">
                     <div class="info-icon">
                         <i class="fas fa-envelope"></i>
@@ -87,7 +89,6 @@
                     </p>
                 </div>
 
-                <!-- Location Card -->
                 <div class="contact-info-card glass-card">
                     <div class="info-icon">
                         <i class="fas fa-map-marker-alt"></i>
@@ -96,7 +97,6 @@
                     <p>Nagpur, India</p>
                 </div>
 
-                <!-- LinkTree Card -->
                 <div class="contact-info-card glass-card">
                     <div class="info-icon">
                         <i class="fa fa-link"></i>
@@ -109,7 +109,6 @@
                     </p>
                 </div>
 
-                <!-- Social Links Card -->
                 <div class="contact-info-card glass-card">
                     <div class="info-icon">
                         <i class="fas fa-share-nodes"></i>

@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Animated Background -->
     <div class="background-container">
         <div class="gradient-orb orb-1"></div>
         <div class="gradient-orb orb-2"></div>
@@ -18,7 +17,12 @@
         <div class="grid-overlay"></div>
     </div>
 
-    <!-- Sidebar Navigation -->
+    <div class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </div>
+    
+    <div class="sidebar-overlay" id="mobile-overlay"></div>
+
     <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="logo">
@@ -68,14 +72,11 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="main-content" id="mainContent">
         <section class="projects-page">
             <h1 class="page-title">My Projects</h1>
             
-            <!-- Projects Grid -->
             <div class="projects-grid">
-                <!-- Resume Parser -->
                 <div class="project-card glass-card" data-category="ai">
                     <div class="project-header">
                         <div class="project-icon">
@@ -98,7 +99,6 @@
                     </div>
                 </div>
 
-                <!-- Crime Data Analysis -->
                 <div class="project-card glass-card" data-category="data">
                     <div class="project-header">
                         <div class="project-icon">
@@ -121,7 +121,6 @@
                     </div>
                 </div>
 
-                <!-- CRUD Application -->
                 <div class="project-card glass-card" data-category="web">
                     <div class="project-header">
                         <div class="project-icon">
@@ -144,7 +143,6 @@
                     </div>
                 </div>
 
-                <!-- Food Donation -->
                 <div class="project-card glass-card" data-category="web">
                     <div class="project-header">
                         <div class="project-icon">
@@ -167,7 +165,6 @@
                     </div>
                 </div>
 
-                <!-- DSA Repository -->
                 <div class="project-card glass-card" data-category="programming">
                     <div class="project-header">
                         <div class="project-icon">
@@ -193,7 +190,6 @@
                     </div>
                 </div>
 
-                <!-- Application Prototypes -->
                 <div class="project-card glass-card" data-category="programming">
                     <div class="project-header">
                         <div class="project-icon">
