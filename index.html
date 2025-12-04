@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ameya Ramteke | AI & DS Engineer</title>
+    
+    <!-- Link External CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            primary: '#00f3ff',
+                            secondary: '#bc13fe',
+                            dark: '#050510',
+                            light: '#f0f0f5',
+                            glass: 'rgba(255, 255, 255, 0.1)',
+                            glassDark: 'rgba(5, 5, 16, 0.6)'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                        mono: ['Courier New', 'monospace']
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'slide-up': 'slideUp 0.5s ease-out forwards'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' }
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 1, boxShadow: '0 0 20px #00f3ff' },
+                            '50%': { opacity: .5, boxShadow: '0 0 5px #00f3ff' }
+                        },
+                        slideUp: {
+                            '0%': { opacity: 0, transform: 'translateY(20px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <!-- Enhanced 3D Styles -->
+    <style>
+        /* 3D Profile Image Spin */
+        .group > img:not(.absolute) {
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+        }
+        
+        .group:hover > img:not(.absolute) {
+            transform: scale(1.1) rotateY(15deg) rotateX(5deg);
+        }
+
+        /* Card Grid 3D Effect */
+        .grid > div {
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+        }
+
+        .grid > div:hover {
+            transform: translateY(-8px) rotateX(8deg) rotateY(4deg) scale(1.03);
+        }
+
+        /* Enhanced Button 3D on click */
+        a, button {
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+        }
+
+        a:active, button:active {
+            transform: scale(0.95) translateY(2px);
+        }
+
+        /* Skills bar 3D effect */
+        .h-2 {
+            transition: all 0.5s ease;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3) inset;
+        }
+
+        .h-full {
+            transition: width 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+        }
+
+        /* Projects grid 3D stagger */
+        @keyframes cardStack {
+            from {
+                opacity: 0;
+                transform: translateY(40px) rotateX(-20deg) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0) scale(1);
+            }
+        }
+
+        .gap-4 > * {
+            animation: cardStack 0.6s cubic-bezier(0.23, 1, 0.320, 1) backwards;
+        }
+
+        .gap-4 > *:nth-child(1) { animation-delay: 0.05s; }
+        .gap-4 > *:nth-child(2) { animation-delay: 0.1s; }
+        .gap-4 > *:nth-child(3) { animation-delay: 0.15s; }
+        .gap-4 > *:nth-child(4) { animation-delay: 0.2s; }
+        .gap-4 > *:nth-child(n+5) { animation-delay: calc(0.05s * (var(--index) - 4)); }
+
+        /* Theme Transition Smoothness */
+        html {
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Prevent transition flash on page load */
+        html.no-transition,
+        html.no-transition * {
+            transition: none !important;
+        }
+    </style>
+</head>
+<body class="text-gray-800 dark:text-gray-100 font-sans transition-colors duration-300 overflow-x-hidden">
+
+    <!-- Loading Screen -->
+    <div id="loader">
+        <div class="text-center flex flex-col items-center justify-center">
+            <div class="text-4xl font-bold text-cyber-primary animate-pulse mb-4">INITIALIZING SYSTEM</div>
+            <div class="w-64 h-2 bg-gray-800 rounded-full overflow-hidden relative mx-auto mb-6">
+                <div class="absolute top-0 left-0 h-full bg-cyber-primary w-full animate-[slideUp_2s_ease-in-out_infinite]" style="animation: loadBar 2s infinite linear;"></div>
+            </div>
+            <p class="text-sm text-gray-400 mt-2">💡 Tip: This portfolio looks best in dark mode</p>
+            <style>
+                @keyframes loadBar { 0% { width: 0%; left: 0; } 50% { width: 100%; left: 0; } 100% { width: 0%; left: 100%; } }
+            </style>
+        </div>
+    </div>
+
+    <!-- 3D Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Main Content Container -->
+    <main class="relative z-10 pb-24 px-4 md:px-8 max-w-7xl mx-auto pt-0">
+
+        <!-- Top Header (Logo Only) -->
+        <header class="flex justify-start items-center mb-6 animate-slide-up">
+            <div class="text-2xl font-bold font-mono tracking-tighter">
+                <span class="text-cyber-primary">&lt;</span>
+                AMEYA_RAMTEKE
+                <span class="text-cyber-primary">/&gt;</span>
+            </div>
+        </header>
+
+        <!-- SECTIONS (Multi-Page Logic) -->
+
+        <!-- 1. HOME SECTION -->
+        <section id="home" class="page-section active text-center">
+            <div class="relative w-48 h-48 md:w-64 md:h-64 mb-8 mx-auto group perspective-1000">
+                <!-- Image Placeholder with Glow -->
+                <div class="absolute inset-0 bg-gradient-to-tr from-cyber-primary to-cyber-secondary rounded-full blur-xl opacity-75 group-hover:opacity-100 transition-opacity animate-pulse"></div>
+                <!-- User Image -->
+                <img src="Assets/image.webp" alt="Ameya Ramteke" class="relative w-full h-full object-cover rounded-full border-4 border-cyber-primary/50 shadow-2xl transform transition-transform duration-500 group-hover:scale-105">
+            </div>
+
+            <h1 class="text-5xl md:text-7xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-cyber-primary via-white to-cyber-secondary animate-float">
+                AI & DS Engineer
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-500 dark:text-gray-300 max-w-2xl mx-auto mb-8 font-light">
+                Building intelligent solutions with Python, Machine Learning, and Cloud Architecture.
+            </p>
+
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="#projects" onclick="navigateTo('projects')" class="px-8 py-3 rounded-full bg-cyber-primary text-black font-bold hover:bg-white hover:shadow-[0_0_30px_rgba(0,243,255,0.6)] transition-all transform hover:-translate-y-1">
+                    View Projects
+                </a>
+                <a href="Assets/Resume.pdf" target="_blank" class="px-8 py-3 rounded-full border border-cyber-primary text-cyber-primary hover:bg-cyber-primary/10 transition-all font-mono">
+                    Download Resume
+                </a>
+            </div>
+
+            <!-- Stats/Highlights -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 w-full max-w-4xl">
+                <div class="glass-panel p-4 rounded-xl text-center">
+                    <div class="text-3xl font-bold text-cyber-secondary">4+</div>
+                    <div class="text-xs uppercase tracking-widest mt-1">Major Projects</div>
+                </div>
+                <div class="glass-panel p-4 rounded-xl text-center">
+                    <div class="text-3xl font-bold text-cyber-primary">5+</div>
+                    <div class="text-xs uppercase tracking-widest mt-1">Certifications</div>
+                </div>
+                <div class="glass-panel p-4 rounded-xl text-center">
+                    <div class="text-3xl font-bold text-yellow-400">Team</div>
+                    <div class="text-xs uppercase tracking-widest mt-1">Lead & Rep</div>
+                </div>
+                <div class="glass-panel p-4 rounded-xl text-center">
+                    <div class="text-3xl font-bold text-green-400">AI/DS</div>
+                    <div class="text-xs uppercase tracking-widest mt-1">Specialization</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ABOUT & SKILLS SECTION -->
+        <section id="about" class="page-section">
+            <h2 class="text-4xl font-bold mb-8 text-center border-b-2 border-cyber-primary/30 pb-4 inline-block mx-auto w-full mt-8">About Me & Skills</h2>
+            
+            <div class="grid md:grid-cols-2 gap-10">
+                <!-- Bio -->
+                <div class="glass-panel p-8 rounded-2xl relative overflow-hidden group card-3d">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-30 transition-opacity">
+                        <i data-lucide="user" class="w-32 h-32"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-cyber-primary">Professional Profile</h3>
+                    <p class="mb-4 leading-relaxed">
+                        Detail-oriented Artificial Intelligence and Data Science student with practical, hands-on experience in data analysis, machine learning, and cloud architecture design. 
+                    </p>
+                    <p class="mb-4 leading-relaxed">
+                        Proven ability to build and manage full-stack projects, analyze data, and implement AI-driven strategies. A proactive team leader and Class Representative eager to apply technical skills in Python, SQL, and GenAI to solve complex problems.
+                    </p>
+                    <div class="flex gap-2 mt-6">
+                        <div class="px-3 py-1 rounded bg-blue-500/20 text-blue-400 text-sm">Nagpur, India</div>
+                        <div class="px-3 py-1 rounded bg-green-500/20 text-green-400 text-sm">Available for Work</div>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                <div class="glass-panel p-8 rounded-2xl card-3d">
+                    <h3 class="text-2xl font-bold mb-6 text-cyber-secondary">Technical Arsenal</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="font-mono">Python & AI/ML</span>
+                                <span class="text-cyber-primary">90%</span>
+                            </div>
+                            <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-cyber-primary w-[90%] shadow-[0_0_10px_#00f3ff]"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="font-mono">Data Analysis (SQL/EDA)</span>
+                                <span class="text-cyber-secondary">85%</span>
+                            </div>
+                            <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-cyber-secondary w-[85%] shadow-[0_0_10px_#bc13fe]"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="font-mono">Web Dev (HTML/CSS/JS)</span>
+                                <span class="text-pink-500">80%</span>
+                            </div>
+                            <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-pink-500 w-[80%]"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="font-mono">Cloud Architecture</span>
+                                <span class="text-yellow-400">75%</span>
+                            </div>
+                            <div class="h-2 bg-gray-700 rounded-full overflow-hidden">
+                                <div class="h-full bg-yellow-400 w-[75%]"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-800 rounded-full border border-gray-600 text-xs hover:border-cyber-primary transition-colors">Java</span>
+                        <span class="px-3 py-1 bg-gray-800 rounded-full border border-gray-600 text-xs hover:border-cyber-primary transition-colors">C</span>
+                        <span class="px-3 py-1 bg-gray-800 rounded-full border border-gray-600 text-xs hover:border-cyber-primary transition-colors">Git & GitHub</span>
+                        <span class="px-3 py-1 bg-gray-800 rounded-full border border-gray-600 text-xs hover:border-cyber-primary transition-colors">OOP</span>
+                        <span class="px-3 py-1 bg-gray-800 rounded-full border border-gray-600 text-xs hover:border-cyber-primary transition-colors">Forensic Tech</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Education & Certs -->
+            <div class="mt-12 grid md:grid-cols-2 gap-8">
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-lucide="graduation-cap"></i> Education</h3>
+                    <ul class="space-y-4">
+                        <li class="border-l-2 border-cyber-primary pl-4">
+                            <div class="font-bold">B. Tech in AI & Data Science</div>
+                            <div class="text-sm text-gray-400">Anjuman College of Engineering & Technology</div>
+                            <div class="text-xs text-cyber-primary mt-1">Pursuing</div>
+                        </li>
+                        <li class="border-l-2 border-gray-600 pl-4">
+                            <div class="font-bold">HSC & SSC</div>
+                            <div class="text-sm text-gray-400">Sandipani School / Essence International School</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-lucide="award"></i> Certifications</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i> GenAI Powered Data Analytics (TATA)</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i> Data Analytics Job Simulation (Deloitte)</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i> Solutions Architecture (AWS)</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i> Git & GitHub Workshop (ACET)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. PROJECTS SECTION -->
+        <section id="projects" class="page-section">
+            <h2 class="text-4xl font-bold mb-8 text-center text-cyber-primary mt-8">Featured Projects</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="glass-panel p-6 rounded-2xl card-3d group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 opacity-60"></div>
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-cyber-primary/20 rounded-lg text-cyber-primary">
+                                <i data-lucide="file-text"></i>
+                            </div>
+                            <a href="https://github.com/ameya-jarvis-07/Resume-Checker" target="_blank" class="text-gray-400 hover:text-white"><i data-lucide="github"></i></a>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Resume-Checker</h3>
+                        <p class="text-gray-300 text-sm mb-4">Developed a system to parse, analyze, and score resumes, demonstrating skills in data extraction and analysis.</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-black/50 px-2 py-1 rounded text-cyber-primary border border-cyber-primary/30">Python</span>
+                            <span class="text-xs bg-black/50 px-2 py-1 rounded text-cyber-primary border border-cyber-primary/30">NLP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="glass-panel p-6 rounded-2xl card-3d group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 opacity-60"></div>
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-cyber-secondary/20 rounded-lg text-cyber-secondary">
+                                <i data-lucide="bar-chart-2"></i>
+                            </div>
+                            <a href="https://github.com/ameya-jarvis-07/Crime-Analysis-Demo" target="_blank" class="text-gray-400 hover:text-white"><i data-lucide="github"></i></a>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Crime-Analysis-Demo</h3>
+                        <p class="text-gray-300 text-sm mb-4">Analyzing crime datasets to identify patterns and trends using Python and visualization techniques.</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-black/50 px-2 py-1 rounded text-cyber-secondary border border-cyber-secondary/30">Data Viz</span>
+                            <span class="text-xs bg-black/50 px-2 py-1 rounded text-cyber-secondary border border-cyber-secondary/30">Pandas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="glass-panel p-6 rounded-2xl card-3d group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 opacity-60"></div>
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-green-500/20 rounded-lg text-green-400">
+                                <i data-lucide="users"></i>
+                            </div>
+                            <a href="https://github.com/ameya-jarvis-07/Account-Management" target="_blank" class="text-gray-400 hover:text-white"><i data-lucide="github"></i></a>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Account-Management</h3>
+                        <p class="text-gray-300 text-sm mb-4">Full-stack CRUD application to manage user accounts, demonstrating DB management and UI skills.</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-black/50 px-2 py-1 rounded text-green-400 border border-green-500/30">Full Stack</span>
+                            <span class="text-xs bg-black/50 px-2 py-1 rounded text-green-400 border border-green-500/30">SQL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="glass-panel p-6 rounded-2xl card-3d group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 opacity-60"></div>
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-yellow-500/20 rounded-lg text-yellow-400">
+                                <i data-lucide="heart"></i>
+                            </div>
+                            <a href="https://github.com/ameya-jarvis-07/Hunger-Bridge" target="_blank" class="text-gray-400 hover:text-white"><i data-lucide="github"></i></a>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Hunger-Bridge</h3>
+                        <p class="text-gray-300 text-sm mb-4">A socially-focused project designed to connect food donors with organizations to reduce food waste.</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-black/50 px-2 py-1 rounded text-yellow-400 border border-yellow-500/30">Social Good</span>
+                            <span class="text-xs bg-black/50 px-2 py-1 rounded text-yellow-400 border border-yellow-500/30">Web App</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5: Solar Explorer -->
+                <div class="glass-panel p-6 rounded-2xl card-3d group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 opacity-60"></div>
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-orange-500/20 rounded-lg text-orange-400">
+                                <i data-lucide="sun"></i>
+                            </div>
+                            <a href="https://github.com/ameya-jarvis-07/Solar-Explorer" target="_blank" class="text-gray-400 hover:text-white"><i data-lucide="github"></i></a>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Solar-Explorer</h3>
+                        <p class="text-gray-300 text-sm mb-4">Interactive solar system visualization and exploration tool with real-time planetary data and 3D rendering.</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-black/50 px-2 py-1 rounded text-orange-400 border border-orange-500/30">3D Graphics</span>
+                            <span class="text-xs bg-black/50 px-2 py-1 rounded text-orange-400 border border-orange-500/30">Web Dev</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 6: Fundamental Concepts -->
+                <div class="glass-panel p-6 rounded-2xl card-3d group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 opacity-60"></div>
+                    <div class="relative z-10">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="p-3 bg-blue-500/20 rounded-lg text-blue-400">
+                                <i data-lucide="book-open"></i>
+                            </div>
+                            <a href="https://github.com/ameya-jarvis-07/Fundamental-Concepts" target="_blank" class="text-gray-400 hover:text-white"><i data-lucide="github"></i></a>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">Fundamental-Concepts</h3>
+                        <p class="text-gray-300 text-sm mb-4">Educational resource showcasing fundamental programming concepts and algorithms with clear examples and implementations.</p>
+                        <div class="flex gap-2">
+                            <span class="text-xs bg-black/50 px-2 py-1 rounded text-blue-400 border border-blue-500/30">Education</span>
+                            <span class="text-xs bg-black/50 px-2 py-1 rounded text-blue-400 border border-blue-500/30">Algorithms</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- 4. CONTACT SECTION -->
+        <section id="contact" class="page-section">
+            <h2 class="text-4xl font-bold mb-8 text-center mt-8">Get In Touch</h2>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Contact Info -->
+                <div class="space-y-8">
+                    <a href="mailto:ameyaramteke07.work@gmail.com" class="glass-panel p-6 rounded-2xl transform transition hover:-translate-y-2 block">
+                        <div class="flex items-center gap-4">
+                            <div class="p-4 bg-cyber-primary/20 rounded-full text-cyber-primary">
+                                <i data-lucide="mail"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">Email Me</h3>
+                                <p class="text-gray-400">ameyaramteke07.work@gmail.com</p>
+                            </div>
+                        </div>
+                    </a>
+                    
+                    <a href="tel:+919422651580" class="glass-panel p-6 rounded-2xl transform transition hover:-translate-y-2 block">
+                        <div class="flex items-center gap-4">
+                            <div class="p-4 bg-cyber-secondary/20 rounded-full text-cyber-secondary">
+                                <i data-lucide="phone"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">Call Me</h3>
+                                <p class="text-gray-400">+91 9422651580</p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <div class="glass-panel p-6 rounded-2xl transform transition hover:-translate-y-2">
+                        <div class="flex items-center gap-4">
+                            <div class="p-4 bg-purple-500/20 rounded-full text-purple-400">
+                                <i data-lucide="map-pin"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">Location</h3>
+                                <p class="text-gray-400">Nagpur, India (440023)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                <form id="contact-form" class="glass-panel p-8 rounded-3xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-cyber-primary blur-[80px] opacity-20 pointer-events-none"></div>
+                    
+                    <h3 class="text-2xl font-bold mb-6">Send a Message</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2 ml-1">Your Name</label>
+                            <input type="text" name="from_name" required class="w-full bg-black/20 border border-gray-600 rounded-xl px-4 py-3 focus:border-cyber-primary focus:outline-none transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2 ml-1">Your Email</label>
+                            <input type="email" name="from_email" required class="w-full bg-black/20 border border-gray-600 rounded-xl px-4 py-3 focus:border-cyber-primary focus:outline-none transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2 ml-1">Message</label>
+                            <textarea name="message" rows="4" required class="w-full bg-black/20 border border-gray-600 rounded-xl px-4 py-3 focus:border-cyber-primary focus:outline-none transition-colors"></textarea>
+                        </div>
+                        
+                        <button type="submit" id="submit-btn" class="w-full bg-gradient-to-r from-cyber-primary to-blue-600 text-black font-bold py-4 rounded-xl hover:shadow-[0_0_20px_rgba(0,243,255,0.4)] transition-all transform hover:scale-[1.02]">
+                            Send Message
+                        </button>
+                    </div>
+                    
+                    <div id="form-status" class="mt-4 text-center text-sm font-bold hidden"></div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 w-[90%] md:w-auto">
+        <div class="glass-panel px-6 py-4 rounded-full flex items-center justify-between md:justify-center gap-6 md:gap-12 shadow-2xl bg-black/80 backdrop-blur-xl border border-gray-700">
+            <button onclick="navigateTo('home')" class="nav-btn active text-gray-400 hover:text-cyber-primary transition-colors flex flex-col items-center">
+                <i data-lucide="home" class="w-6 h-6 mb-1"></i>
+                <span class="text-[10px] uppercase font-bold">Home</span>
+            </button>
+            <button onclick="navigateTo('about')" class="nav-btn text-gray-400 hover:text-cyber-primary transition-colors flex flex-col items-center">
+                <i data-lucide="user" class="w-6 h-6 mb-1"></i>
+                <span class="text-[10px] uppercase font-bold">About</span>
+            </button>
+            <button onclick="navigateTo('projects')" class="nav-btn text-gray-400 hover:text-cyber-primary transition-colors flex flex-col items-center">
+                <i data-lucide="code" class="w-6 h-6 mb-1"></i>
+                <span class="text-[10px] uppercase font-bold">Work</span>
+            </button>
+            <button onclick="navigateTo('contact')" class="nav-btn text-gray-400 hover:text-cyber-primary transition-colors flex flex-col items-center">
+                <i data-lucide="mail" class="w-6 h-6 mb-1"></i>
+                <span class="text-[10px] uppercase font-bold">Contact</span>
+            </button>
+            <a href="Assets/Resume.pdf" target="_blank" class="text-gray-400 hover:text-cyber-primary transition-colors flex flex-col items-center">
+                <i data-lucide="file-text" class="w-6 h-6 mb-1"></i>
+                <span class="text-[10px] uppercase font-bold">Resume</span>
+            </a>
+            <div class="w-px h-6 bg-gray-600"></div>
+            <button id="nav-theme-toggle" class="text-gray-400 hover:text-cyber-primary transition-colors flex flex-col items-center justify-center group min-w-[60px]">
+                <i data-lucide="sun" class="w-6 h-6 mb-1 hidden dark:block text-yellow-300 group-hover:rotate-90 transition-transform"></i>
+                <i data-lucide="moon" class="w-6 h-6 mb-1 block dark:hidden text-cyber-secondary group-hover:-rotate-12 transition-transform"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- External Script -->
+    <script src="script.js"></script>
+</body>
+</html>

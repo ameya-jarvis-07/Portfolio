@@ -1,0 +1,442 @@
+/* Root & Dark Mode Background */
+html, html.dark {
+    background: #050510;
+    color-scheme: dark;
+}
+
+html.dark body {
+    background: linear-gradient(135deg, #030306 0%, #0a0a15 50%, #050510 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: #e0e0f0;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+}
+::-webkit-scrollbar-thumb {
+    background: #00f3ff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+}
+
+/* 3D Card Hover Effects */
+.card-3d {
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.320, 1), box-shadow 0.4s ease;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+.card-3d:hover {
+    transform: translateY(-15px) rotateX(8deg) rotateY(-5deg) scale(1.02);
+    box-shadow: 0 30px 60px -5px rgba(0, 243, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced 3D Depth */
+.card-3d::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0, 243, 255, 0.1), rgba(188, 19, 254, 0.05));
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+.card-3d:hover::before {
+    opacity: 1;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.glass-panel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+    pointer-events: none;
+}
+
+.glass-panel:hover::after {
+    left: 100%;
+}
+
+.dark .glass-panel {
+    background: rgba(5, 5, 16, 0.7);
+    border-color: rgba(0, 243, 255, 0.15);
+    box-shadow: inset 0 1px 0 rgba(0, 243, 255, 0.1), 0 8px 32px -8px rgba(0, 0, 0, 0.3);
+}
+
+.light .glass-panel {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 8px 32px -8px rgba(0, 0, 0, 0.1);
+}
+
+/* Page Transitions with 3D */
+.page-section {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+    transform: translateZ(0);
+}
+
+.page-section.active {
+    display: block;
+    opacity: 1;
+    animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+/* Position all sections to start from top */
+.page-section {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem 1rem 8rem 1rem;
+    margin: 0 !important;
+    min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+    .page-section {
+        padding: 2rem 2rem 8rem 2rem;
+    }
+}
+
+#home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 1rem 6rem 1rem;
+    height: 100vh;
+    max-height: 100vh;
+    overflow: visible;
+}
+
+#home h1 {
+    line-height: 1.3 !important;
+    padding-bottom: 0.5rem !important;
+}
+
+#home .w-48, #home .h-48 {
+    width: 10rem !important;
+    height: 10rem !important;
+}
+
+#home .text-5xl {
+    font-size: 2.5rem !important;
+}
+
+#home .text-xl {
+    font-size: 1rem !important;
+}
+
+#home .mb-8 {
+    margin-bottom: 1.5rem !important;
+}
+
+#home .mb-4 {
+    margin-bottom: 1rem !important;
+}
+
+#home .mt-16 {
+    margin-top: 2rem !important;
+}
+
+#home .gap-4 {
+    gap: 0.75rem !important;
+}
+
+#home .p-4 {
+    padding: 0.75rem !important;
+}
+
+@media (min-width: 768px) {
+    #home {
+        padding: 2rem 2rem 6rem 2rem;
+    }
+    
+    #home .md\:w-64, #home .md\:h-64 {
+        width: 12rem !important;
+        height: 12rem !important;
+    }
+    
+    #home .md\:text-7xl {
+        font-size: 3.5rem !important;
+    }
+    
+    #home .md\:text-2xl {
+        font-size: 1.25rem !important;
+    }
+}
+
+/* Contact page - fit in viewport */
+#contact {
+    height: 100vh;
+    max-height: 100vh;
+    overflow: auto;
+    padding: 1rem 1rem 10rem 1rem !important;
+}
+
+#contact .gap-12 {
+    gap: 1.5rem !important;
+}
+
+#contact h2 {
+    font-size: 2rem !important;
+    margin-bottom: 1rem !important;
+}
+
+#contact .space-y-6 {
+    gap: 1rem !important;
+}
+
+#contact .space-y-4 {
+    gap: 0.75rem !important;
+}
+
+#contact .p-6 {
+    padding: 1rem !important;
+}
+
+#contact .p-8 {
+    padding: 1.25rem !important;
+}
+
+#contact textarea {
+    min-height: 80px !important;
+    max-height: 80px !important;
+}
+
+@media (min-width: 768px) {
+    #contact {
+        padding: 1.5rem 2rem 6rem 2rem !important;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) rotateX(-10deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
+}
+
+/* Canvas z-index */
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    transition: filter 0.5s ease;
+    pointer-events: none;
+    display: block;
+}
+
+/* Loader */
+#loader {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #050510;
+    transition: opacity 0.5s ease, backdrop-filter 0.5s ease;
+    backdrop-filter: blur(10px);
+}
+
+/* 3D Transform utilities */
+.perspective-1000 {
+    perspective: 1000px;
+}
+
+/* Enhanced button 3D effect */
+button {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+button:hover {
+    transform: translateY(-4px) rotateX(5deg) scale(1.05);
+}
+
+button:active {
+    transform: translateY(-2px) rotateX(3deg) scale(0.98);
+}
+
+/* ===== LIGHT MODE STYLES ===== */
+html.light {
+    color-scheme: light;
+    background: #c3e0fa;
+}
+
+html.light ::-webkit-scrollbar-track {
+    background: #c3e0fa;
+}
+
+html.light ::-webkit-scrollbar-thumb {
+    background: #0066ff;
+}
+
+html.light body {
+    background: linear-gradient(135deg, #c3e0fa 0%, #b8d5f0 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    color: #0a0a1a;
+}
+
+html.light h1, html.light h2, html.light h3, html.light h4, html.light h5, html.light h6 {
+    color: #050510 !important;
+    font-weight: 700;
+}
+
+html.light p, html.light span {
+    color: #2a2a3e !important;
+}
+
+html.light .text-gray-500 {
+    color: #444 !important;
+}
+
+html.light .text-gray-400 {
+    color: #555 !important;
+}
+
+html.light .text-gray-300 {
+    color: #666 !important;
+}
+
+html.light .text-gray-800 {
+    color: #1a1a2e !important;
+}
+
+html.light .text-cyber-primary {
+    color: #0088aa !important;
+}
+
+html.light .text-cyber-secondary {
+    color: #7700aa !important;
+}
+
+html.light .font-light {
+    color: #333 !important;
+}
+
+html.light .font-semibold,
+html.light .font-bold {
+    color: #050510 !important;
+}
+
+html.light .glass-panel {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(188, 19, 254, 0.2);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 8px 32px -8px rgba(0, 0, 0, 0.1);
+}
+
+html.light .glass-panel::after {
+    background: linear-gradient(90deg, transparent, rgba(188, 19, 254, 0.15), transparent);
+}
+
+html.light .card-3d {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+html.light .card-3d::before {
+    background: linear-gradient(135deg, rgba(188, 19, 254, 0.1), rgba(0, 243, 255, 0.05));
+}
+
+html.light .bg-gray-700 {
+    background: #ddd !important;
+}
+
+html.light .bg-gray-800 {
+    background: #ccc !important;
+}
+
+html.light .page-section {
+    color: #0a0a1a;
+}
+
+html.light .text-gray-300 {
+    color: #4a4a5a !important;
+}
+
+html.light .text-gray-400 {
+    color: #5a5a6a !important;
+}
+
+/* Light mode button styling */
+html.light button {
+    color: #050510;
+}
+
+html.light .bg-cyber-primary {
+    background: #0088aa !important;
+    color: white !important;
+}
+
+html.light .border-cyber-primary {
+    border-color: #0066ff !important;
+    border-width: 2px !important;
+    color: #0066ff !important;
+    font-weight: 600 !important;
+}
+
+html.light .hover\:bg-cyber-primary\/10:hover {
+    background: rgba(0, 102, 255, 0.15) !important;
+    border-color: #0044cc !important;
+    color: #0044cc !important;
+}
+
+/* Additional light mode text utilities */
+html.light .text-white {
+    color: #050510 !important;
+}
+
+html.light .opacity-75 {
+    opacity: 1;
+    color: #0a0a1a !important;
+}
+
+html.light .text-yellow-300 {
+    color: #cc9900 !important;
+}
+
+html.light .text-yellow-400 {
+    color: #dd9900 !important;
+}
+
+html.light .text-green-400 {
+    color: #00aa00 !important;
+}
+
+html.light .text-blue-500 {
+    color: #0066cc !important;
+}
+
+html.light .text-blue-400 {
+    color: #0088dd !important;
+}
