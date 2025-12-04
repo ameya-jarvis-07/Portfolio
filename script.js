@@ -60,8 +60,12 @@ function navigateTo(sectionId) {
 // --- 3. THEME TOGGLE LOGIC ---
 const htmlElement = document.documentElement;
 
-// Load saved theme from localStorage
-let isDark = localStorage.getItem('theme') !== 'light';
+// Clear cache on page load
+localStorage.clear();
+sessionStorage.clear();
+
+// Default to light mode
+let isDark = false;
 
 // Initialize with saved theme (prevent flash)
 function initTheme() {
