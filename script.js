@@ -95,7 +95,21 @@ function initTheme() {
         }
     }, 100);
     
-    console.log('Theme initialized as:', isDark ? 'dark' : 'light');
+    // Initialize icon visibility
+    const navThemeToggle = document.getElementById('nav-theme-toggle');
+    if (navThemeToggle) {
+        const sunIcon = navThemeToggle.querySelector('[data-lucide="sun"]');
+        const moonIcon = navThemeToggle.querySelector('[data-lucide="moon"]');
+        if (sunIcon && moonIcon) {
+            if (isDark) {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+    }
 }
 
 // Call init immediately and on page load
@@ -122,20 +136,18 @@ if (navThemeToggle) {
             update3DTheme(isDark);
         }
         
-        // Update icon
+        // Update icon (sun in dark mode, moon in light mode)
         const sunIcon = navThemeToggle.querySelector('[data-lucide="sun"]');
         const moonIcon = navThemeToggle.querySelector('[data-lucide="moon"]');
         if (sunIcon && moonIcon) {
             if (isDark) {
-                sunIcon.classList.add('hidden');
-                moonIcon.classList.remove('hidden');
-            } else {
                 sunIcon.classList.remove('hidden');
                 moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
             }
         }
-        
-        console.log('Theme switched to:', isDark ? 'dark' : 'light');
     });
 }
 

@@ -398,6 +398,86 @@ html.light .bg-cyber-primary {
     color: white !important;
 }
 
+/* Center the theme toggle button inside its nav division */
+#nav-theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Remove extra bottom margin on the toggle icons so they vertically center cleanly */
+#nav-theme-toggle i {
+    margin-bottom: 0 !important;
+    display: block;
+}
+
+/* Mobile adjustments: make the toggle smaller and keep it centered when nav is constrained */
+@media (max-width: 767px) {
+    /* Hide text labels on mobile to save space */
+    .nav-btn span,
+    nav a span {
+        display: none !important;
+    }
+
+    /* Make all nav items icon-only with flexible sizing */
+    .nav-btn,
+    nav a {
+        min-width: 36px !important;
+        max-width: 48px !important;
+        padding: 0.5rem 0.25rem !important;
+        flex: 0 1 auto;
+    }
+
+    /* Ensure icons are properly sized */
+    .nav-btn i,
+    nav a i {
+        margin-bottom: 0 !important;
+        width: 1.25rem !important;
+        height: 1.25rem !important;
+    }
+
+    #nav-theme-toggle {
+        min-width: 36px !important;
+        max-width: 48px !important;
+        padding: 0.5rem 0.25rem !important;
+        align-self: center !important;
+        height: auto !important;
+        flex: 0 1 auto;
+    }
+
+    /* Ensure icons don't add extra vertical space */
+    #nav-theme-toggle i {
+        line-height: 0 !important;
+        height: 1.25rem !important;
+        width: 1.25rem !important;
+    }
+
+    /* Adjust navbar for very small screens */
+    @media (max-width: 360px) {
+        .nav-btn,
+        nav a,
+        #nav-theme-toggle {
+            min-width: 32px !important;
+            max-width: 40px !important;
+            padding: 0.375rem 0.125rem !important;
+        }
+
+        .nav-btn i,
+        nav a i,
+        #nav-theme-toggle i {
+            width: 1.125rem !important;
+            height: 1.125rem !important;
+        }
+
+        nav > div {
+            gap: 0.25rem !important;
+            padding: 0.375rem 0.5rem !important;
+        }
+    }
+}
+
 html.light .border-cyber-primary {
     border-color: #0066ff !important;
     border-width: 2px !important;
