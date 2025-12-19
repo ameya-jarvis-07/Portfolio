@@ -31,41 +31,117 @@ document.addEventListener('DOMContentLoaded', () => {
 // Remove loader after 3 seconds
 setTimeout(() => removeLoader(), 3000);
 
-// --- 2. NAVIGATION LOGIC (SPA FEEL) ---
-function navigateTo(sectionId) {
-    // Hide all sections
-    document.querySelectorAll('.page-section').forEach(sec => {
-        sec.classList.remove('active');
-    });
-    
-    // Show target section
-    document.getElementById(sectionId).classList.add('active');
+// --- 2. NAVIGATION LOGIC (SMOOTH SCROLL) ---
+// Smooth scroll is now handled by CSS scroll-behavior: smooth
+// Update active nav button based on scroll position
+let lastActiveSection = 'home';
 
-    // Update Nav State
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        btn.classList.remove('text-cyber-primary', 'scale-110');
-        btn.classList.add('text-gray-400');
+function updateActiveNav() {
+    const sections = document.querySelectorAll('section[id]');
+    const scrollY = window.pageYOffset;
+    
+    let currentSection = 'home';
+    
+    sections.forEach(section => {
+        const sectionHeight = section.offsetHeight;
+        const sectionTop = section.offsetTop - 150;
+        const sectionId = section.getAttribute('id');
+        
+        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+            currentSection = sectionId;
+        }
     });
     
-    // Highlight active button (approximate matching)
-    const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(b => 
-        b.getAttribute('onclick').includes(sectionId)
-    );
-    if(activeBtn) {
-        activeBtn.classList.remove('text-gray-400');
-        activeBtn.classList.add('text-cyber-primary', 'scale-110');
+    if (lastActiveSection !== currentSection) {
+        lastActiveSection = currentSection;
+        
+        // Update desktop nav
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.classList.remove('active', 'text-cyber-primary', 'scale-110');
+        });
+        
+        const activeBtn = document.querySelector(`.nav-btn[href="#${currentSection}"]`);
+        if (activeBtn) {
+            activeBtn.classList.add('active', 'text-cyber-primary', 'scale-110');
+        }
+        
+        // Update mobile nav
+        document.querySelectorAll('.mobile-nav-btn').forEach(btn => {
+            btn.classList.remove('active', 'text-cyber-primary');
+        });
+        
+        const activeMobileBtn = document.querySelector(`.mobile-nav-btn[href="#${currentSection}"]`);
+        if (activeMobileBtn) {
+            activeMobileBtn.classList.add('active', 'text-cyber-primary');
+        }
     }
 }
+
+window.addEventListener('scroll', updateActiveNav);
+window.addEventListener('load', updateActiveNav);
+// Also update on page interaction
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(updateActiveNav, 100);
+});
+
+// --- 2.5. MOBILE MENU TOGGLE ---
+const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+const mobileMenuClose = document.getElementById('mobile-menu-close');
+const mobileMenu = document.getElementById('mobile-menu');
+const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+const mobileNavBtns = document.querySelectorAll('.mobile-nav-btn');
+
+function openMobileMenu() {
+    mobileMenu.classList.remove('translate-x-full');
+    mobileMenuOverlay.classList.remove('opacity-0', 'pointer-events-none');
+    mobileMenuOverlay.classList.add('opacity-100');
+    document.body.style.overflow = 'hidden';
+    
+    // Re-initialize Lucide icons in mobile menu
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+}
+
+function closeMobileMenu() {
+    mobileMenu.classList.add('translate-x-full');
+    mobileMenuOverlay.classList.add('opacity-0', 'pointer-events-none');
+    mobileMenuOverlay.classList.remove('opacity-100');
+    document.body.style.overflow = '';
+}
+
+if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener('click', openMobileMenu);
+}
+
+if (mobileMenuClose) {
+    mobileMenuClose.addEventListener('click', closeMobileMenu);
+}
+
+if (mobileMenuOverlay) {
+    mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+}
+
+// Close mobile menu when clicking nav links
+mobileNavBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        closeMobileMenu();
+    });
+});
+
+// Close mobile menu on escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !mobileMenu.classList.contains('translate-x-full')) {
+        closeMobileMenu();
+    }
+});
 
 // --- 3. THEME TOGGLE LOGIC ---
 const htmlElement = document.documentElement;
 
-// Clear cache on page load
-localStorage.clear();
-sessionStorage.clear();
-
-// Default to light mode
-let isDark = false;
+// Check for saved theme preference or default to dark mode
+const savedTheme = localStorage.getItem('theme');
+let isDark = savedTheme ? savedTheme === 'dark' : true; // Default to dark mode
 
 // Initialize with saved theme (prevent flash)
 function initTheme() {
@@ -96,7 +172,46 @@ function initTheme() {
     }, 100);
     
     // Initialize icon visibility
-    const navThemeToggle = document.getElementById('nav-theme-toggle');
+    setTimeout(() => {
+        updateThemeIcons();
+    }, 50);
+}
+
+// Call init immediately and on page load
+initTheme();
+document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    // Re-initialize icons after DOM is fully loaded
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+});
+
+// Theme toggle handler via navbar button
+const navThemeToggle = document.getElementById('nav-theme-toggle');
+const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+
+function toggleTheme() {
+    isDark = !isDark;
+    
+    // Update DOM with smooth transition
+    htmlElement.classList.toggle('dark');
+    htmlElement.classList.toggle('light');
+    
+    // Save to localStorage
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    
+    // Update 3D Background Colors (if Three.js is ready)
+    if (typeof update3DTheme === 'function') {
+        update3DTheme(isDark);
+    }
+    
+    // Update icon (sun in dark mode, moon in light mode)
+    updateThemeIcons();
+}
+
+function updateThemeIcons() {
+    // Desktop toggle
     if (navThemeToggle) {
         const sunIcon = navThemeToggle.querySelector('[data-lucide="sun"]');
         const moonIcon = navThemeToggle.querySelector('[data-lucide="moon"]');
@@ -110,35 +225,11 @@ function initTheme() {
             }
         }
     }
-}
-
-// Call init immediately and on page load
-initTheme();
-document.addEventListener('DOMContentLoaded', () => {
-    initTheme();
-});
-
-// Theme toggle handler via navbar button
-const navThemeToggle = document.getElementById('nav-theme-toggle');
-if (navThemeToggle) {
-    navThemeToggle.addEventListener('click', () => {
-        isDark = !isDark;
-        
-        // Update DOM with smooth transition
-        htmlElement.classList.toggle('dark');
-        htmlElement.classList.toggle('light');
-        
-        // Save to localStorage
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        
-        // Update 3D Background Colors (if Three.js is ready)
-        if (typeof update3DTheme === 'function') {
-            update3DTheme(isDark);
-        }
-        
-        // Update icon (sun in dark mode, moon in light mode)
-        const sunIcon = navThemeToggle.querySelector('[data-lucide="sun"]');
-        const moonIcon = navThemeToggle.querySelector('[data-lucide="moon"]');
+    
+    // Mobile toggle
+    if (mobileThemeToggle) {
+        const sunIcon = mobileThemeToggle.querySelector('[data-lucide="sun"]');
+        const moonIcon = mobileThemeToggle.querySelector('[data-lucide="moon"]');
         if (sunIcon && moonIcon) {
             if (isDark) {
                 sunIcon.classList.remove('hidden');
@@ -148,7 +239,15 @@ if (navThemeToggle) {
                 moonIcon.classList.remove('hidden');
             }
         }
-    });
+    }
+}
+
+if (navThemeToggle) {
+    navThemeToggle.addEventListener('click', toggleTheme);
+}
+
+if (mobileThemeToggle) {
+    mobileThemeToggle.addEventListener('click', toggleTheme);
 }
 
 // --- 4. EMAILJS INTEGRATION ---
