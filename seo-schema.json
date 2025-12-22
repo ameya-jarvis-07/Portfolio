@@ -1,0 +1,25 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Ameya Ramteke",
+  "jobTitle": "AI & Data Science Engineer",
+  "url": "https://ameya-jarvis-07.github.io/Portfolio/",
+  "sameAs": [
+    "https://github.com/ameya-jarvis-07",
+    "https://linkedin.com/in/ameya-ramteke",
+    "https://twitter.com/ameyaramteke"
+  ],
+  "knowsAbout": [
+    "Artificial Intelligence",
+    "Machine Learning",
+    "Deep Learning",
+    "Data Science",
+    "Python Programming",
+    "Neural Networks",
+    "Natural Language Processing",
+    "Computer Vision",
+    "Data Analysis"
+  ],
+  "description": "AI & Data Science Engineer specializing in machine learning, deep learning, and innovative data-driven solutions.",
+  "image": "https://ameya-jarvis-07.github.io/Portfolio/Assets/image.webp"
+}

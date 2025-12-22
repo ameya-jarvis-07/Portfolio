@@ -139,9 +139,8 @@ document.addEventListener('keydown', (e) => {
 // --- 3. THEME TOGGLE LOGIC ---
 const htmlElement = document.documentElement;
 
-// Check for saved theme preference or default to dark mode
-const savedTheme = localStorage.getItem('theme');
-let isDark = savedTheme ? savedTheme === 'dark' : true; // Default to dark mode
+// Always default to light mode (no localStorage persistence)
+let isDark = false; // Default to light mode
 
 // Initialize with saved theme (prevent flash)
 function initTheme() {
@@ -197,9 +196,6 @@ function toggleTheme() {
     // Update DOM with smooth transition
     htmlElement.classList.toggle('dark');
     htmlElement.classList.toggle('light');
-    
-    // Save to localStorage
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
     
     // Update 3D Background Colors (if Three.js is ready)
     if (typeof update3DTheme === 'function') {
