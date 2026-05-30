@@ -29,7 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Remove loader after 3 seconds
-setTimeout(() => removeLoader(), 3000);
+// Remove loader when page fully loads; fallback after 4s
+window.addEventListener('load', removeLoader);
+setTimeout(() => {
+    // if still present remove as a fallback
+    removeLoader();
+}, 4000);
 
 // --- 2. NAVIGATION LOGIC (SMOOTH SCROLL) ---
 // Smooth scroll is now handled by CSS scroll-behavior: smooth
