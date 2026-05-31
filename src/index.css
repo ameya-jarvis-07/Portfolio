@@ -1136,7 +1136,7 @@ input, textarea {
 @media (min-width: 900px) {
   .about-template-grid {
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 180px 220px 180px;
+    grid-template-rows: auto 220px 180px;
     grid-template-areas:
       "profile craft craft"
       "mindset center education"
