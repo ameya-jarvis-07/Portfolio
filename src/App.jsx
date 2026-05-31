@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import {
   BarChart3,
   BookOpen,
-  Code2,
   FileText,
   Heart,
   Sun,
@@ -102,18 +101,23 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [isLoading, setIsLoading] = useState(true);
   const [scrollY, setScrollY] = useState(0);
-  const [reduceMotion, setReduceMotion] = useState(false);
+  const [theme, setTheme] = useState('light');
 
   // Initialize GSAP scroll animations
   useScrollAnimations();
 
   useEffect(() => {
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const apply = () => setReduceMotion(media.matches);
-    apply();
-    media.addEventListener('change', apply);
-    return () => media.removeEventListener('change', apply);
+    const storedTheme = window.localStorage.getItem('theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
+    setTheme(initialTheme);
   }, []);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    window.localStorage.setItem('theme', theme);
+  }, [theme]);
+
 
   useEffect(() => {
     const reveal = () => {
@@ -184,11 +188,15 @@ export default function App() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, []);
 
+  const handleToggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
+  };
+
   return (
     <>
       {isLoading ? <LoaderSkeleton /> : null}
       
-      {!reduceMotion && <Scene3D scrollY={scrollY} />}
+      <Scene3D scrollY={scrollY} />
       
       <div className="app-container">
         <Navbar 
@@ -197,6 +205,8 @@ export default function App() {
           onToggleMenu={() => setMenuOpen(!menuOpen)}
           onCloseMenu={() => setMenuOpen(false)}
           resumeUrl={resumeUrl}
+          theme={theme}
+          onToggleTheme={handleToggleTheme}
         />
         
         <main className="main-content">

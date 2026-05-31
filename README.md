@@ -23,5 +23,5 @@ npm run build
 ## Notes
 
 - `src/App.jsx` contains the full portfolio UI and interactions.
-- `style.css` keeps the existing visual system and loader skeleton styles.
+- `src/index.css` keeps the existing visual system and loader skeleton styles.
 - `index.html` now mounts React through `src/main.jsx`.

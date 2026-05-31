@@ -1,4 +1,4 @@
-import { FileText, Home, Mail, Menu, User, Code2, X } from 'lucide-react';
+import { FileText, Home, Mail, Menu, User, Code2, X, Sun, Moon } from 'lucide-react';
 
 const navItems = [
   { id: 'home', label: 'Home', icon: Home },
@@ -7,7 +7,15 @@ const navItems = [
   { id: 'contact', label: 'Contact', icon: Mail },
 ];
 
-export default function Navbar({ activeSection, menuOpen, onToggleMenu, onCloseMenu, resumeUrl }) {
+export default function Navbar({
+  activeSection,
+  menuOpen,
+  onToggleMenu,
+  onCloseMenu,
+  resumeUrl,
+  theme,
+  onToggleTheme,
+}) {
   return (
     <>
       <nav className="navbar" role="navigation" aria-label="Main navigation">
@@ -28,16 +36,29 @@ export default function Navbar({ activeSection, menuOpen, onToggleMenu, onCloseM
             </a>
           </div>
 
-          {/* Hamburger */}
-          <button
-            type="button"
-            className="hamburger"
-            aria-label="Toggle mobile menu"
-            aria-expanded={menuOpen}
-            onClick={onToggleMenu}
-          >
-            <Menu style={{ width: 24, height: 24 }} />
-          </button>
+          <div className="navbar-actions">
+            <button
+              type="button"
+              className="theme-toggle"
+              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              aria-pressed={theme === 'dark'}
+              onClick={onToggleTheme}
+              title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
+            >
+              {theme === 'dark' ? <Sun style={{ width: 20, height: 20 }} /> : <Moon style={{ width: 20, height: 20 }} />}
+            </button>
+
+            {/* Hamburger */}
+            <button
+              type="button"
+              className="hamburger"
+              aria-label="Toggle mobile menu"
+              aria-expanded={menuOpen}
+              onClick={onToggleMenu}
+            >
+              <Menu style={{ width: 24, height: 24 }} />
+            </button>
+          </div>
         </div>
       </nav>
 

@@ -1,8 +1,6 @@
-import { useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { EffectComposer, Bloom, Noise } from '@react-three/postprocessing';
 import StarField from './StarField';
-import FloatingGeometry from './FloatingGeometry';
 
 function ScrollCamera({ scrollY }) {
   const { camera } = useThree();
@@ -26,7 +24,6 @@ export default function Scene3D({ scrollY }) {
         <pointLight position={[-5, -5, 5]} intensity={1.5} color="#6A8C1A" />
         
         <StarField />
-        <FloatingGeometry scrollY={scrollY} />
         <ScrollCamera scrollY={scrollY} />
         
         <EffectComposer disableNormalPass>
