@@ -49,7 +49,7 @@ export default function ProjectsSection({ projects }) {
 
                 {project.image ? (
                   <div className="project-template-media" aria-hidden="true">
-                    <img src={project.image} alt="" loading="lazy" />
+                    <img src={project.image} alt={`Screenshot of ${project.title}`} loading="lazy" />
                   </div>
                 ) : null}
 
