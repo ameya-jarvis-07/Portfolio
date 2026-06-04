@@ -14,6 +14,7 @@ import AboutSection from './components/AboutSection';
 import ProjectsSection from './components/ProjectsSection';
 import ContactSection from './components/ContactSection';
 import useScrollAnimations from './hooks/useScrollAnimations';
+import Footer from './components/Footer';
 
 const heroImage = new URL('../Assets/image.webp', import.meta.url).href;
 const resumeUrl = new URL('../Assets/Resume.pdf', import.meta.url).href;
@@ -86,6 +87,8 @@ const certifications = [
   'Data Analytics Job Simulation (Deloitte)',
   'Solutions Architecture (AWS)',
   'Git & GitHub Workshop (ACET)',
+  'SQL and Relational Databases 101 (Cognitive Class)',
+  'Prompt Engineering for Everyone (Cognitive Class)',
 ];
 
 function LoaderSkeleton() {
@@ -194,6 +197,7 @@ export default function App() {
 
   return (
     <>
+
       {isLoading ? <LoaderSkeleton /> : null}
       
       <Scene3D scrollY={scrollY} />
@@ -220,6 +224,7 @@ export default function App() {
           <ProjectsSection projects={projects} />
           <ContactSection />
         </main>
+        <Footer />
       </div>
     </>
   );
