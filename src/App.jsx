@@ -89,6 +89,7 @@ const certifications = [
   'Git & GitHub Workshop (ACET)',
   'SQL and Relational Databases 101 (Cognitive Class)',
   'Prompt Engineering for Everyone (Cognitive Class)',
+  'Claude 101 (Anthropic)',
 ];
 
 function LoaderSkeleton() {
@@ -105,6 +106,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [scrollY, setScrollY] = useState(0);
   const [theme, setTheme] = useState('light');
+  const [showCookieBanner, setShowCookieBanner] = useState(false);
 
   // Initialize GSAP scroll animations
   useScrollAnimations();
@@ -120,6 +122,15 @@ export default function App() {
     document.documentElement.dataset.theme = theme;
     window.localStorage.setItem('theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    const storedConsent = window.localStorage.getItem('cookieConsent');
+    if (storedConsent) {
+      return;
+    }
+
+    setShowCookieBanner(true);
+  }, []);
 
 
   useEffect(() => {
@@ -195,6 +206,11 @@ export default function App() {
     setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
   };
 
+  const handleCookieConsent = (choice) => {
+    window.localStorage.setItem('cookieConsent', choice);
+    setShowCookieBanner(false);
+  };
+
   return (
     <>
 
@@ -226,6 +242,31 @@ export default function App() {
         </main>
         <Footer />
       </div>
+      {showCookieBanner ? (
+        <div className="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
+          <div className="cookie-banner__content">
+            <p className="cookie-banner__text">
+              This site uses cookies to improve your experience and measure site usage. You can accept or reject non-essential cookies.
+            </p>
+            <div className="cookie-banner__actions">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => handleCookieConsent('accepted')}
+              >
+                Accept
+              </button>
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={() => handleCookieConsent('rejected')}
+              >
+                Reject
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </>
   );
 }
