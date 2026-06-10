@@ -1,19 +1,39 @@
 import { useState, useRef, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
-import { Linkedin, Mail, Phone, MapPin } from 'lucide-react';
+import { Linkedin, Mail, Phone, MapPin, Github, ExternalLink } from 'lucide-react';
 
 function SectionHeading({ children, className = '' }) {
   return <h2 className={`section-heading ${className}`}>{children}</h2>;
 }
 
-export default function ContactSection() {
+const CONTACT_ICON_MAP = {
+  linkedin: Linkedin,
+  mail: Mail,
+  phone: Phone,
+  'map-pin': MapPin,
+  github: Github,
+  'external-link': ExternalLink,
+};
+
+const ICON_COLOR_MAP = {
+  linkedin: 'cyan',
+  mail: 'cyan',
+  phone: 'purple',
+  'map-pin': 'pink',
+  github: 'cyan',
+  'external-link': 'purple',
+};
+
+export default function ContactSection({ contact }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState({ kind: '', message: '' });
   const contactFormRef = useRef(null);
 
   useEffect(() => {
-    emailjs.init('CtQwEFyX5Kq-7gqmJ');
-  }, []);
+    if (contact?.emailjs?.publicKey) {
+      emailjs.init(contact.emailjs.publicKey);
+    }
+  }, [contact?.emailjs?.publicKey]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,7 +41,11 @@ export default function ContactSection() {
     setStatus({ kind: '', message: '' });
 
     try {
-      await emailjs.sendForm('service_tbdm0d2', 'template_pch5iiw', contactFormRef.current);
+      await emailjs.sendForm(
+        contact.emailjs.serviceId,
+        contact.emailjs.templateId,
+        contactFormRef.current,
+      );
       setStatus({ kind: 'success', message: "Thanks! I'll get back to you soon." });
       contactFormRef.current?.reset();
     } catch (error) {
@@ -35,58 +59,55 @@ export default function ContactSection() {
   return (
     <section id="contact" className="section contact-template">
       <div className="contact-template-header">
-        <span className="contact-template-eyebrow">Let’s talk</span>
+        <span className="contact-template-eyebrow">{contact.eyebrow}</span>
         <SectionHeading>
-          Get In <span className="text-gradient-shimmer">Touch</span>
+          {contact.title.split(' ').slice(0, -1).join(' ')}{' '}
+          <span className="text-gradient-shimmer">{contact.title.split(' ').slice(-1)[0]}</span>
         </SectionHeading>
         <p className="contact-template-subtitle">
-          Have a project in mind or looking for a collaborator? Send a message and I’ll reply soon.
+          {contact.subtitle}
         </p>
       </div>
 
       <div className="contact-template-grid">
         <div className="contact-template-info reveal-left">
-          <a
-            href="https://www.linkedin.com/in/ameya-ramteke"
-            target="_blank"
-            rel="noreferrer"
-            className="glass contact-card card-3d"
-          >
-            <div className="contact-icon-wrapper cyan">
-              <Linkedin style={{ width: 24, height: 24 }} />
-            </div>
-            <div>
-              <h3 className="contact-card-title">LinkedIn</h3>
-              <p className="contact-card-text">ameya-ramteke</p>
-            </div>
-          </a>
-          <a href="mailto:ameyaramteke07.work@gmail.com" className="glass contact-card card-3d">
-            <div className="contact-icon-wrapper cyan">
-              <Mail style={{ width: 24, height: 24 }} />
-            </div>
-            <div>
-              <h3 className="contact-card-title">Email Me</h3>
-              <p className="contact-card-text">ameyaramteke07.work@gmail.com</p>
-            </div>
-          </a>
-          <a href="tel:+919422651580" className="glass contact-card card-3d">
-            <div className="contact-icon-wrapper purple">
-              <Phone style={{ width: 24, height: 24 }} />
-            </div>
-            <div>
-              <h3 className="contact-card-title">Call Me</h3>
-              <p className="contact-card-text">+91 9422651580</p>
-            </div>
-          </a>
-          <div className="glass contact-card card-3d">
-            <div className="contact-icon-wrapper pink">
-              <MapPin style={{ width: 24, height: 24 }} />
-            </div>
-            <div>
-              <h3 className="contact-card-title">Location</h3>
-              <p className="contact-card-text">Nagpur, India (440023)</p>
-            </div>
-          </div>
+          {contact.links.map((link) => {
+            const IconComp = CONTACT_ICON_MAP[link.iconKey] || Mail;
+            const colorClass = ICON_COLOR_MAP[link.iconKey] || 'cyan';
+            const isClickable = link.href && link.href !== '#contact';
+
+            const cardContent = (
+              <>
+                <div className={`contact-icon-wrapper ${colorClass}`}>
+                  <IconComp style={{ width: 24, height: 24 }} />
+                </div>
+                <div>
+                  <h3 className="contact-card-title">{link.title}</h3>
+                  <p className="contact-card-text">{link.text}</p>
+                </div>
+              </>
+            );
+
+            if (isClickable) {
+              return (
+                <a
+                  key={link.id}
+                  href={link.href}
+                  target={link.href.startsWith('mailto:') || link.href.startsWith('tel:') ? undefined : '_blank'}
+                  rel="noreferrer"
+                  className="glass contact-card card-3d"
+                >
+                  {cardContent}
+                </a>
+              );
+            }
+
+            return (
+              <div key={link.id} className="glass contact-card card-3d">
+                {cardContent}
+              </div>
+            );
+          })}
         </div>
 
         <form

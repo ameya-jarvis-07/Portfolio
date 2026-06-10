@@ -1,272 +1,274 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  BarChart3,
-  BookOpen,
   FileText,
-  Heart,
-  Sun,
+  BarChart,
   Users,
+  Heart,
+  Sun as SunIcon,
+  BookOpen,
 } from 'lucide-react';
-import Scene3D from './components/Scene3D';
+
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
 import ProjectsSection from './components/ProjectsSection';
 import ContactSection from './components/ContactSection';
-import useScrollAnimations from './hooks/useScrollAnimations';
 import Footer from './components/Footer';
+import Scene3D from './components/Scene3D';
+import CmsDashboard from './components/CmsDashboard';
+import useScrollAnimations from './hooks/useScrollAnimations';
+import { createDefaultPortfolioContent, STORAGE_KEYS } from './data/portfolioContent';
 
+/* ─── Icon registry ─── */
+const ICON_MAP = {
+  'file-text': FileText,
+  'bar-chart': BarChart,
+  users: Users,
+  heart: Heart,
+  sun: SunIcon,
+  'book-open': BookOpen,
+};
+
+/* ─── Asset URLs ─── */
 const heroImage = new URL('../Assets/image.webp', import.meta.url).href;
 const resumeUrl = new URL('../Assets/Resume.pdf', import.meta.url).href;
 
-const skillBars = [
-  { label: 'Python & AI/ML', value: 90, color: 'cyan' },
-  { label: 'Data Analysis (SQL/EDA)', value: 85, color: 'purple' },
-  { label: 'Web Dev (HTML/CSS/JS)', value: 80, color: 'pink' },
-  { label: 'Cloud Architecture', value: 75, color: 'yellow' },
-];
-
-const projects = [
-  {
-    title: 'Resume-Checker',
-    description: 'A system to parse, analyze, and score resumes, showing skills in data extraction and analysis.',
-    tags: ['Python', 'NLP'],
-    accent: 'cyan',
-    icon: FileText,
-    link: 'https://github.com/ameya-jarvis-07/Resume-Checker',
-  },
-  {
-    title: 'Crime-Analysis-Demo',
-    description: 'Crime dataset analysis to identify patterns and trends using Python and visualization techniques.',
-    tags: ['Data Viz', 'Pandas'],
-    accent: 'purple',
-    icon: BarChart3,
-    link: 'https://github.com/ameya-jarvis-07/Crime-Analysis-Demo',
-  },
-  {
-    title: 'Account-Management',
-    description: 'Full-stack CRUD app for user account management, demonstrating database and UI skills.',
-    tags: ['Full Stack', 'SQL'],
-    accent: 'green',
-    icon: Users,
-    link: 'https://github.com/ameya-jarvis-07/Account-Management-System',
-  },
-  {
-    title: 'Hunger-Bridge',
-    description: 'A socially focused project that connects food donors with organizations to reduce food waste.',
-    tags: ['Social Good', 'Web App'],
-    accent: 'yellow',
-    icon: Heart,
-    link: 'https://github.com/ameya-jarvis-07/Hunger-Bridge',
-  },
-  {
-    title: 'Solar-Explorer',
-    description: 'Interactive solar system exploration tool with real-time planetary data and 3D rendering.',
-    tags: ['3D Graphics', 'Web Dev'],
-    accent: 'orange',
-    icon: Sun,
-    link: 'https://ameya-jarvis-07.github.io/Solar-Explorer/',
-  },
-  {
-    title: 'Neuro.Net',
-    description: 'Youth-driven workshops on psychology and artificial intelligence.',
-    tags: ['Education', 'Algorithms'],
-    accent: 'blue',
-    icon: BookOpen,
-    link: 'https://neuronet.co.in',
-  },
-];
-
-const education = [
-  { title: 'B. Tech in AI & Data Science', place: 'Anjuman College of Engineering & Technology', status: 'Pursuing' },
-  { title: 'HSC & SSC', place: 'Sandipani School / Essence International School', status: '' },
-];
-
-const certifications = [
-  'GenAI Powered Data Analytics (TATA)',
-  'Data Analytics Job Simulation (Deloitte)',
-  'Solutions Architecture (AWS)',
-  'Git & GitHub Workshop (ACET)',
-  'SQL and Relational Databases 101 (Cognitive Class)',
-  'Prompt Engineering for Everyone (Cognitive Class)',
-  'Claude 101 (Anthropic)',
-];
-
-function LoaderSkeleton() {
-  return (
-    <div id="loader" className="loader-container" role="status" aria-live="polite">
-      <div className="loader-spinner"></div>
-    </div>
-  );
+/* ─── Crypto helpers ─── */
+async function sha256(text) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(text);
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
 }
 
+function generateSessionToken() {
+  const arr = new Uint8Array(32);
+  crypto.getRandomValues(arr);
+  return Array.from(arr)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+/* ─── LocalStorage helpers ─── */
+function loadContent() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.content);
+    if (raw) return JSON.parse(raw);
+  } catch {
+    /* corrupted — fall back to defaults */
+  }
+  return null;
+}
+
+function saveContent(content) {
+  try {
+    localStorage.setItem(STORAGE_KEYS.content, JSON.stringify(content));
+  } catch {
+    /* quota exceeded — silent */
+  }
+}
+
+function isSessionValid() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.session);
+    if (!raw) return false;
+    const session = JSON.parse(raw);
+    // Session expires after 24 hours
+    return session.token && Date.now() - session.created < 24 * 60 * 60 * 1000;
+  } catch {
+    return false;
+  }
+}
+
+function credentialsExist() {
+  return !!localStorage.getItem(STORAGE_KEYS.credentials);
+}
+
+/* ─── Route helper ─── */
+function getHashRoute() {
+  const hash = window.location.hash;
+  if (hash === '#/admin' || hash === '#/admin/') return 'admin';
+  return 'portfolio';
+}
+
+/* ─── Enrich projects with icon components ─── */
+function enrichProjects(projects) {
+  return projects.map((p) => ({
+    ...p,
+    icon: ICON_MAP[p.iconKey] || FileText,
+  }));
+}
+
+/* ============================================================
+   APP
+   ============================================================ */
 export default function App() {
+  /* ── Content state ── */
+  const defaults = createDefaultPortfolioContent({ heroImage, resumeUrl });
+  const [content, setContent] = useState(() => loadContent() || defaults);
+
+  /* ── Auth state ── */
+  const [authenticated, setAuthenticated] = useState(isSessionValid);
+  const [credentialsConfigured, setCredentialsConfigured] = useState(credentialsExist);
+
+  /* ── UI state ── */
+  const [route, setRoute] = useState(getHashRoute);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-  const [isLoading, setIsLoading] = useState(true);
   const [scrollY, setScrollY] = useState(0);
   const [theme, setTheme] = useState('light');
-  const [showCookieBanner, setShowCookieBanner] = useState(false);
 
-  // Initialize GSAP scroll animations
+  const mainRef = useRef(null);
+
+  /* ── Scroll animations (GSAP) ── */
   useScrollAnimations();
 
+  /* ── Persist content whenever it changes ── */
   useEffect(() => {
-    const storedTheme = window.localStorage.getItem('theme');
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialTheme = storedTheme || (prefersDark ? 'dark' : 'light');
-    setTheme(initialTheme);
+    saveContent(content);
+  }, [content]);
+
+  /* ── Hash routing ── */
+  useEffect(() => {
+    const handleHashChange = () => setRoute(getHashRoute());
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  /* ── Scroll tracking ── */
   useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    window.localStorage.setItem('theme', theme);
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+
+      const sections = document.querySelectorAll('section[id]');
+      let current = 'home';
+      for (const section of sections) {
+        const top = section.offsetTop - 150;
+        if (window.scrollY >= top) {
+          current = section.getAttribute('id');
+        }
+      }
+      setActiveSection(current);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  /* ── Theme ── */
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
-  useEffect(() => {
-    const storedConsent = window.localStorage.getItem('cookieConsent');
-    if (storedConsent) {
+  const toggleTheme = useCallback(() => {
+    setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
+  }, []);
+
+  /* ── Auth handlers ── */
+  const handleAuthenticate = useCallback(async (form, isSetup) => {
+    if (isSetup) {
+      if (!form.username.trim()) throw new Error('Username is required.');
+      if (form.password.length < 6) throw new Error('Password must be at least 6 characters.');
+      if (form.password !== form.confirmPassword) throw new Error('Passwords do not match.');
+
+      const hash = await sha256(form.username + ':' + form.password);
+      localStorage.setItem(STORAGE_KEYS.credentials, JSON.stringify({ hash }));
+      setCredentialsConfigured(true);
+
+      const token = generateSessionToken();
+      localStorage.setItem(STORAGE_KEYS.session, JSON.stringify({ token, created: Date.now() }));
+      setAuthenticated(true);
       return;
     }
 
-    setShowCookieBanner(true);
+    // Login
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEYS.credentials) || '{}');
+    const hash = await sha256(form.username + ':' + form.password);
+    if (hash !== stored.hash) throw new Error('Invalid username or password.');
+
+    const token = generateSessionToken();
+    localStorage.setItem(STORAGE_KEYS.session, JSON.stringify({ token, created: Date.now() }));
+    setAuthenticated(true);
   }, []);
 
+  const handleLogout = useCallback(() => {
+    localStorage.removeItem(STORAGE_KEYS.session);
+    setAuthenticated(false);
+  }, []);
 
-  useEffect(() => {
-    const reveal = () => {
-      window.setTimeout(() => setIsLoading(false), 150);
-    };
+  /* ── Content change handler ── */
+  const handleContentChange = useCallback((updater) => {
+    setContent((prev) => {
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      return next;
+    });
+  }, []);
 
-    if (document.readyState === 'complete') {
-      reveal();
-      return undefined;
+  /* ── CMS helpers ── */
+  const handleCmsClose = useCallback(() => {
+    window.location.hash = '#/';
+  }, []);
+
+  const handleResetToDefaults = useCallback(() => {
+    if (window.confirm('Reset all content to factory defaults? This cannot be undone.')) {
+      setContent(defaults);
     }
+  }, [defaults]);
 
-    window.addEventListener('load', reveal, { once: true });
-    const fallback = window.setTimeout(reveal, 4000);
+  /* ── Enriched projects for rendering ── */
+  const projects = enrichProjects(content.projects);
 
-    return () => {
-      window.clearTimeout(fallback);
-      window.removeEventListener('load', reveal);
-    };
-  }, []);
-
-  useEffect(() => {
-    const sectionIds = ['home', 'about', 'projects', 'contact'];
-
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setScrollY(currentScrollY);
-
-      let currentSection = 'home';
-      sectionIds.forEach((sectionId) => {
-        const element = document.getElementById(sectionId);
-        if (!element) return;
-
-        const sectionTop = element.offsetTop - 150;
-        const sectionBottom = sectionTop + element.offsetHeight;
-        if (currentScrollY >= sectionTop && currentScrollY < sectionBottom) {
-          currentSection = sectionId;
-        }
-      });
-
-      setActiveSection(currentSection);
-    };
-
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [menuOpen]);
-
-  useEffect(() => {
-    const onKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        setMenuOpen(false);
-      }
-    };
-
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, []);
-
-  const handleToggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
-  };
-
-  const handleCookieConsent = (choice) => {
-    window.localStorage.setItem('cookieConsent', choice);
-    setShowCookieBanner(false);
-  };
-
+  /* ── Render ── */
   return (
     <>
-
-      {isLoading ? <LoaderSkeleton /> : null}
-      
+      {/* 3D background */}
       <Scene3D scrollY={scrollY} />
-      
-      <div className="app-container">
-        <Navbar 
+
+      {/* Portfolio */}
+      <div className="app-container" ref={mainRef}>
+        <Navbar
           activeSection={activeSection}
           menuOpen={menuOpen}
-          onToggleMenu={() => setMenuOpen(!menuOpen)}
+          onToggleMenu={() => setMenuOpen((o) => !o)}
           onCloseMenu={() => setMenuOpen(false)}
-          resumeUrl={resumeUrl}
+          resumeUrl={content.hero.resumeUrl || resumeUrl}
           theme={theme}
-          onToggleTheme={handleToggleTheme}
+          onToggleTheme={toggleTheme}
+          brand={content.site.brand}
         />
-        
+
         <main className="main-content">
-          <HeroSection resumeUrl={resumeUrl} heroImage={heroImage} />
+          <HeroSection
+            hero={content.hero}
+            resumeUrl={content.hero.resumeUrl || resumeUrl}
+            heroImage={content.hero.image || heroImage}
+          />
           <AboutSection
-            skillBars={skillBars}
-            education={education}
-            certifications={certifications}
-            heroImage={heroImage}
+            about={content.about}
+            skillBars={content.about.skillBars}
+            education={content.about.education}
+            certifications={content.about.certifications.map((c) => c.label)}
+            heroImage={content.hero.image || heroImage}
           />
           <ProjectsSection projects={projects} />
-          <ContactSection />
+          <ContactSection contact={content.contact} />
+          <Footer footer={content.footer} resumeUrl={content.hero.resumeUrl || resumeUrl} />
         </main>
-        <Footer />
       </div>
-      {showCookieBanner ? (
-        <div className="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
-          <div className="cookie-banner__content">
-            <p className="cookie-banner__text">
-              This site uses cookies to improve your experience and measure site usage. You can accept or reject non-essential cookies.
-            </p>
-            <div className="cookie-banner__actions">
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => handleCookieConsent('accepted')}
-              >
-                Accept
-              </button>
-              <button
-                type="button"
-                className="btn btn-outline"
-                onClick={() => handleCookieConsent('rejected')}
-              >
-                Reject
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
+
+      {/* CMS Dashboard — only renders on /#/admin */}
+      <CmsDashboard
+        open={route === 'admin'}
+        authenticated={authenticated}
+        credentialsConfigured={credentialsConfigured}
+        content={content}
+        onContentChange={handleContentChange}
+        onAuthenticate={handleAuthenticate}
+        onLogout={handleLogout}
+        onClose={handleCmsClose}
+        onResetToDefaults={handleResetToDefaults}
+      />
     </>
   );
 }
