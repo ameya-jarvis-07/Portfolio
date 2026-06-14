@@ -1,4 +1,4 @@
-import { Mail, Github, Linkedin, ExternalLink } from 'lucide-react';
+import { Mail, Github, Linkedin, ExternalLink, Lock } from 'lucide-react';
 
 const FOOTER_ICON_MAP = {
   mail: Mail,
@@ -54,8 +54,11 @@ export default function Footer({ footer, resumeUrl }) {
           </div>
         </div>
 
-        <div className="footer-meta">
+        <div className="footer-meta" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
           <small>© {year} {footer.name}. All rights reserved.</small>
+          <a href="#/admin" className="footer-admin-link" style={{ opacity: 0.6, fontSize: '0.8rem', textDecoration: 'none', color: 'inherit', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            <Lock style={{ width: 12, height: 12 }} /> Admin Portal
+          </a>
         </div>
       </div>
     </footer>

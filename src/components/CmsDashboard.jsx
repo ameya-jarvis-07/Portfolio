@@ -139,12 +139,48 @@ export default function CmsDashboard({
   onResetToDefaults,
 }) {
   const [activeTab, setActiveTab] = useState('overview');
-  const [authForm, setAuthForm] = useState({ username: '', password: '', confirmPassword: '' });
+  const [authForm, setAuthForm] = useState({ email: '', password: '' });
   const [authError, setAuthError] = useState('');
-  const [setupMode, setSetupMode] = useState(!credentialsConfigured);
   const [statusMessage, setStatusMessage] = useState('Changes save automatically to local storage.');
   const [busy, setBusy] = useState(false);
   const fileInputRef = useRef(null);
+
+  const handleImageUpload = async (event, index, item) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+    const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
+
+    if (!cloudName || !uploadPreset) {
+      alert('Cloudinary config is missing in environment variables. Make sure VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_UPLOAD_PRESET are set.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', uploadPreset);
+
+    try {
+      setStatusMessage('Uploading project image to Cloudinary...');
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const data = await response.json();
+      updateArrayItem(['projects'], index, { ...item, image: data.secure_url });
+      setStatusMessage('Image uploaded and updated successfully.');
+    } catch (err) {
+      console.error(err);
+      alert('Image upload failed: ' + err.message);
+      setStatusMessage('Image upload failed.');
+    }
+  };
 
   const tabs = useMemo(
     () => [
@@ -210,9 +246,9 @@ export default function CmsDashboard({
     setBusy(true);
 
     try {
-      await onAuthenticate(authForm, setupMode);
-      setAuthForm({ username: '', password: '', confirmPassword: '' });
-      setStatusMessage(setupMode ? 'Admin access created.' : 'Signed in successfully.');
+      await onAuthenticate(authForm);
+      setAuthForm({ email: '', password: '' });
+      setStatusMessage('Signed in successfully.');
     } catch (error) {
       setAuthError(error.message || 'Authentication failed.');
     } finally {
@@ -259,7 +295,7 @@ export default function CmsDashboard({
               <p className="cms-shell__eyebrow">Private access</p>
               <h2 className="cms-shell__title">Content Management</h2>
               <p className="cms-shell__subtitle">
-                Sign in to edit the live portfolio or create private admin access for this browser.
+                Sign in to edit the live portfolio.
               </p>
             </div>
             <button type="button" className="cms-close" onClick={onClose} aria-label="Close admin panel">
@@ -268,11 +304,12 @@ export default function CmsDashboard({
           </div>
 
           <form className="cms-login-form" onSubmit={handleAuthSubmit}>
-            <Field label="Username">
+            <Field label="Email">
               <TextInput
-                value={authForm.username}
-                onChange={(event) => setAuthForm((current) => ({ ...current, username: event.target.value }))}
-                autoComplete="username"
+                type="email"
+                value={authForm.email}
+                onChange={(event) => setAuthForm((current) => ({ ...current, email: event.target.value }))}
+                autoComplete="email"
                 required
               />
             </Field>
@@ -281,36 +318,20 @@ export default function CmsDashboard({
                 type="password"
                 value={authForm.password}
                 onChange={(event) => setAuthForm((current) => ({ ...current, password: event.target.value }))}
-                autoComplete={setupMode ? 'new-password' : 'current-password'}
+                autoComplete="current-password"
                 required
               />
             </Field>
-            {setupMode ? (
-              <Field label="Confirm password">
-                <TextInput
-                  type="password"
-                  value={authForm.confirmPassword}
-                  onChange={(event) => setAuthForm((current) => ({ ...current, confirmPassword: event.target.value }))}
-                  autoComplete="new-password"
-                  required
-                />
-              </Field>
-            ) : null}
 
             {authError ? <div className="cms-status cms-status--error">{authError}</div> : null}
             <div className="cms-status">
-              {setupMode
-                ? 'Create the private login you want to use on this domain.'
-                : 'Enter your credentials to unlock the dashboard.'}
+              Enter your credentials to unlock the dashboard.
             </div>
 
             <div className="cms-actions-row">
               <button type="submit" className="btn btn-primary" disabled={busy}>
                 <Shield size={16} />
-                {busy ? 'Working...' : setupMode ? 'Create access' : 'Login'}
-              </button>
-              <button type="button" className="btn btn-outline" onClick={() => setSetupMode((current) => !current)}>
-                {setupMode ? 'I already have access' : 'Set up access'}
+                {busy ? 'Working...' : 'Login'}
               </button>
             </div>
           </form>
@@ -623,9 +644,26 @@ export default function CmsDashboard({
                             <Field label="Link">
                               <TextInput value={item.link} onChange={(event) => updateArrayItem(['projects'], index, { ...item, link: event.target.value })} />
                             </Field>
-                            <Field label="Image URL">
-                              <TextInput value={item.image || ''} onChange={(event) => updateArrayItem(['projects'], index, { ...item, image: event.target.value })} />
-                            </Field>
+                            <div className="cms-image-upload-group" style={{ display: 'flex', gap: '10px', alignItems: 'flex-end', width: '100%' }}>
+                              <div style={{ flex: 1 }}>
+                                <Field label="Image URL">
+                                  <TextInput value={item.image || ''} onChange={(event) => updateArrayItem(['projects'], index, { ...item, image: event.target.value })} />
+                                </Field>
+                              </div>
+                              <div style={{ marginBottom: '16px' }}>
+                                <input
+                                  type="file"
+                                  accept="image/*"
+                                  id={`upload-${index}`}
+                                  style={{ display: 'none' }}
+                                  onChange={(e) => handleImageUpload(e, index, item)}
+                                />
+                                <label htmlFor={`upload-${index}`} className="btn btn-outline" style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px', height: '42px', padding: '0 16px', borderRadius: '8px' }}>
+                                  <Upload size={14} />
+                                  Upload
+                                </label>
+                              </div>
+                            </div>
                           </div>
                           <Field label="Description">
                             <TextArea rows={4} value={item.description} onChange={(event) => updateArrayItem(['projects'], index, { ...item, description: event.target.value })} />

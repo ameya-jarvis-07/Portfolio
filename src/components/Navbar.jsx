@@ -1,4 +1,4 @@
-import { FileText, Home, Mail, Menu, User, Code2, X, Sun, Moon } from 'lucide-react';
+import { FileText, Home, Mail, Menu, User, Code2, X, Sun, Moon, Lock } from 'lucide-react';
 
 const navItems = [
   { id: 'home', label: 'Home', icon: Home },
@@ -20,6 +20,12 @@ export default function Navbar({
     <>
       <nav className="navbar" role="navigation" aria-label="Main navigation">
         <div className="navbar-inner">
+          <div className="navbar-logo-left">
+            <a href="#/admin" className="nav-pill-link admin-login-btn" style={{ padding: '8px 12px', display: 'flex', alignItems: 'center', gap: '6px', marginRight: '15px', textDecoration: 'none' }} title="Admin Portal">
+              <Lock style={{ width: 14, height: 14 }} />
+              <span>Admin</span>
+            </a>
+          </div>
           <div className="navbar-pill" role="menubar" aria-label="Primary">
             {navItems.map(({ id, label }) => (
               <a

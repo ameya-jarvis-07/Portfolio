@@ -7,6 +7,13 @@ import {
   Sun as SunIcon,
   BookOpen,
 } from 'lucide-react';
+import { auth } from './firebase';
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from 'firebase/auth';
 
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
@@ -30,28 +37,10 @@ const ICON_MAP = {
 };
 
 /* ─── Asset URLs ─── */
-const heroImage = new URL('../Assets/image.webp', import.meta.url).href;
-const resumeUrl = new URL('../Assets/Resume.pdf', import.meta.url).href;
+const heroImage = 'https://res.cloudinary.com/dlwj22t9e/image/upload/v1781444840/image_kysrq2.webp';
+const resumeUrl = 'https://res.cloudinary.com/dlwj22t9e/raw/upload/v1781444843/Resume_krwrvk.pdf';
 
-/* ─── Crypto helpers ─── */
-async function sha256(text) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(text);
-  const hash = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(hash))
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
-}
-
-function generateSessionToken() {
-  const arr = new Uint8Array(32);
-  crypto.getRandomValues(arr);
-  return Array.from(arr)
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
-}
-
-/* ─── LocalStorage helpers ─── */
+/* ─── LocalStorage helpers (Fallback) ─── */
 function loadContent() {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.content);
@@ -70,22 +59,6 @@ function saveContent(content) {
   }
 }
 
-function isSessionValid() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEYS.session);
-    if (!raw) return false;
-    const session = JSON.parse(raw);
-    // Session expires after 24 hours
-    return session.token && Date.now() - session.created < 24 * 60 * 60 * 1000;
-  } catch {
-    return false;
-  }
-}
-
-function credentialsExist() {
-  return !!localStorage.getItem(STORAGE_KEYS.credentials);
-}
-
 /* ─── Route helper ─── */
 function getHashRoute() {
   const hash = window.location.hash;
@@ -95,7 +68,7 @@ function getHashRoute() {
 
 /* ─── Enrich projects with icon components ─── */
 function enrichProjects(projects) {
-  return projects.map((p) => ({
+  return (projects || []).map((p) => ({
     ...p,
     icon: ICON_MAP[p.iconKey] || FileText,
   }));
@@ -107,11 +80,17 @@ function enrichProjects(projects) {
 export default function App() {
   /* ── Content state ── */
   const defaults = createDefaultPortfolioContent({ heroImage, resumeUrl });
-  const [content, setContent] = useState(() => loadContent() || defaults);
+  defaults.contact.emailjs = {
+    serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID || '',
+    templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '',
+    publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '',
+  };
+
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   /* ── Auth state ── */
-  const [authenticated, setAuthenticated] = useState(isSessionValid);
-  const [credentialsConfigured, setCredentialsConfigured] = useState(credentialsExist);
+  const [authenticated, setAuthenticated] = useState(false);
 
   /* ── UI state ── */
   const [route, setRoute] = useState(getHashRoute);
@@ -125,9 +104,55 @@ export default function App() {
   /* ── Scroll animations (GSAP) ── */
   useScrollAnimations();
 
-  /* ── Persist content whenever it changes ── */
+  /* ── Listen for Firebase Auth Changes ── */
   useEffect(() => {
-    saveContent(content);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setAuthenticated(!!user);
+    });
+    return unsubscribe;
+  }, []);
+
+  /* ── Fetch portfolio data from database API ── */
+  useEffect(() => {
+    async function loadPortfolio() {
+      try {
+        const res = await fetch('/api/portfolio');
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        if (data.uninitialized) {
+          setContent(defaults);
+        } else {
+          // Merge EmailJS values from env
+          data.contact.emailjs = {
+            serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID || '',
+            templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '',
+            publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '',
+          };
+          setContent(data);
+        }
+      } catch (err) {
+        console.error('Error fetching portfolio from database API:', err);
+        const local = loadContent();
+        if (local) {
+          local.contact.emailjs = {
+            serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID || '',
+            templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '',
+            publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '',
+          };
+        }
+        setContent(local || defaults);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadPortfolio();
+  }, [defaults]);
+
+  /* ── Persist content whenever it changes (Local Storage fallback) ── */
+  useEffect(() => {
+    if (content) {
+      saveContent(content);
+    }
   }, [content]);
 
   /* ── Hash routing ── */
@@ -165,45 +190,58 @@ export default function App() {
     setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
   }, []);
 
-  /* ── Auth handlers ── */
-  const handleAuthenticate = useCallback(async (form, isSetup) => {
-    if (isSetup) {
-      if (!form.username.trim()) throw new Error('Username is required.');
-      if (form.password.length < 6) throw new Error('Password must be at least 6 characters.');
-      if (form.password !== form.confirmPassword) throw new Error('Passwords do not match.');
+  /* ── Database save helper ── */
+  const saveContentToDb = useCallback(async (updatedContent) => {
+    try {
+      const token = await auth.currentUser?.getIdToken();
+      if (!token) throw new Error('Not authenticated');
 
-      const hash = await sha256(form.username + ':' + form.password);
-      localStorage.setItem(STORAGE_KEYS.credentials, JSON.stringify({ hash }));
-      setCredentialsConfigured(true);
+      const res = await fetch('/api/portfolio', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(updatedContent),
+      });
 
-      const token = generateSessionToken();
-      localStorage.setItem(STORAGE_KEYS.session, JSON.stringify({ token, created: Date.now() }));
-      setAuthenticated(true);
-      return;
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || 'Failed to save to database');
+      }
+      return true;
+    } catch (err) {
+      console.error('Error saving content to database API:', err);
+      alert('Failed to save to database: ' + err.message);
+      return false;
     }
-
-    // Login
-    const stored = JSON.parse(localStorage.getItem(STORAGE_KEYS.credentials) || '{}');
-    const hash = await sha256(form.username + ':' + form.password);
-    if (hash !== stored.hash) throw new Error('Invalid username or password.');
-
-    const token = generateSessionToken();
-    localStorage.setItem(STORAGE_KEYS.session, JSON.stringify({ token, created: Date.now() }));
-    setAuthenticated(true);
   }, []);
 
-  const handleLogout = useCallback(() => {
-    localStorage.removeItem(STORAGE_KEYS.session);
-    setAuthenticated(false);
+  /* ── Auth handlers using Firebase Auth ── */
+  const handleAuthenticate = useCallback(async (form) => {
+    if (!form.email.trim()) throw new Error('Email is required.');
+    if (form.password.length < 6) throw new Error('Password must be at least 6 characters.');
+
+    await signInWithEmailAndPassword(auth, form.email, form.password);
+  }, []);
+
+  const handleLogout = useCallback(async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
   }, []);
 
   /* ── Content change handler ── */
   const handleContentChange = useCallback((updater) => {
     setContent((prev) => {
       const next = typeof updater === 'function' ? updater(prev) : updater;
+      // Trigger database save asynchronously
+      saveContentToDb(next);
       return next;
     });
-  }, []);
+  }, [saveContentToDb]);
 
   /* ── CMS helpers ── */
   const handleCmsClose = useCallback(() => {
@@ -213,8 +251,37 @@ export default function App() {
   const handleResetToDefaults = useCallback(() => {
     if (window.confirm('Reset all content to factory defaults? This cannot be undone.')) {
       setContent(defaults);
+      saveContentToDb(defaults);
     }
-  }, [defaults]);
+  }, [defaults, saveContentToDb]);
+
+  if (loading) {
+    return (
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+        fontFamily: 'system-ui, sans-serif',
+        background: '#0a0b10',
+        color: '#fff'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div className="spinner" style={{
+            border: '4px solid rgba(255,255,255,0.1)',
+            width: '36px',
+            height: '36px',
+            borderRadius: '50%',
+            borderLeftColor: '#00f2fe',
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 15px'
+          }} />
+          <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+          <p>Loading portfolio...</p>
+        </div>
+      </div>
+    );
+  }
 
   /* ── Enriched projects for rendering ── */
   const projects = enrichProjects(content.projects);
@@ -261,7 +328,7 @@ export default function App() {
       <CmsDashboard
         open={route === 'admin'}
         authenticated={authenticated}
-        credentialsConfigured={credentialsConfigured}
+        credentialsConfigured={true}
         content={content}
         onContentChange={handleContentChange}
         onAuthenticate={handleAuthenticate}
@@ -272,3 +339,4 @@ export default function App() {
     </>
   );
 }
+
