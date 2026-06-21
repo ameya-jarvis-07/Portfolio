@@ -1,6 +1,6 @@
 {
-  "/page": "app/page.js",
-  "/api/portfolio/route": "app/api/portfolio/route.js",
+  "/hellothere/page": "app/hellothere/page.js",
   "/api/auth/route": "app/api/auth/route.js",
-  "/hellothere/page": "app/hellothere/page.js"
+  "/page": "app/page.js",
+  "/welcometocms/page": "app/welcometocms/page.js"
 }

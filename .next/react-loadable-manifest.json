@@ -4,5 +4,11 @@
     "files": [
       "static/chunks/_app-pages-browser_src_components_Scene3D_jsx.js"
     ]
+  },
+  "app\\welcometocms\\DashboardWrapper.jsx -> ../../src/components/CmsDashboard": {
+    "id": "app\\welcometocms\\DashboardWrapper.jsx -> ../../src/components/CmsDashboard",
+    "files": [
+      "static/chunks/_app-pages-browser_src_components_CmsDashboard_jsx.js"
+    ]
   }
 }

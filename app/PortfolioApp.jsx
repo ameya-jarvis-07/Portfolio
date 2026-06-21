@@ -57,7 +57,20 @@ function enrichProjects(projects) {
 export default function PortfolioApp({ initialContent }) {
   /* ── Content state ── */
   const defaults = createDefaultPortfolioContent({ heroImage, resumeUrl });
-  const [content, setContent] = useState(initialContent || defaults);
+
+  // Merge loaded database content with default structure to prevent crashes on missing sections
+  const mergedContent = initialContent && typeof initialContent === 'object' && initialContent.site && initialContent.hero
+    ? {
+        site: { ...defaults.site, ...initialContent.site },
+        hero: { ...defaults.hero, ...initialContent.hero },
+        about: { ...defaults.about, ...initialContent.about },
+        projects: initialContent.projects || defaults.projects,
+        contact: { ...defaults.contact, ...initialContent.contact },
+        footer: { ...defaults.footer, ...initialContent.footer }
+      }
+    : defaults;
+
+  const [content, setContent] = useState(mergedContent);
 
   useEffect(() => {
     const handleMessage = (event) => {

@@ -18,7 +18,20 @@ const resumeUrl = '/Assets/Resume.pdf';
 
 export default function DashboardWrapper({ initialContent }) {
   const defaults = createDefaultPortfolioContent({ heroImage, resumeUrl });
-  const [content, setContent] = useState(initialContent || defaults);
+
+  // Merge loaded database content with default structure to prevent form fields crashing on missing sections
+  const mergedContent = initialContent && typeof initialContent === 'object' && initialContent.site && initialContent.hero
+    ? {
+        site: { ...defaults.site, ...initialContent.site },
+        hero: { ...defaults.hero, ...initialContent.hero },
+        about: { ...defaults.about, ...initialContent.about },
+        projects: initialContent.projects || defaults.projects,
+        contact: { ...defaults.contact, ...initialContent.contact },
+        footer: { ...defaults.footer, ...initialContent.footer }
+      }
+    : defaults;
+
+  const [content, setContent] = useState(mergedContent);
   const lastSavedContentRef = useRef(JSON.stringify(initialContent));
  
   // Preview states
