@@ -1,1 +1,0 @@
-"use strict";exports.id=88,exports.ids=[88],exports.modules={4088:(t,o,r)=>{r.r(o),r.d(o,{default:()=>e});let e=(0,r(8570).createProxy)(String.raw`D:\CODES\Portfolio\app\PortfolioApp.jsx#default`)}};

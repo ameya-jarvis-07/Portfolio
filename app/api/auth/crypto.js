@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { cookies } from 'next/headers';
 
 const SECRET_KEY = process.env.SESSION_SECRET || 'fallback-local-only-super-secret-key-change-in-production';
 
@@ -40,21 +41,31 @@ export function verifyToken(token) {
 
 export function isAuthenticatedRequest(request) {
   // 1. Check Authorization header
-  const authHeader = request.headers.get('Authorization') || '';
+  const authHeader = request?.headers?.get('Authorization') || '';
   if (authHeader.startsWith('Bearer ')) {
     const token = authHeader.substring(7);
     const payload = verifyToken(token);
     if (payload) return true;
   }
 
-  // 2. Check admin_session cookie
-  const cookieHeader = request.headers.get('Cookie') || '';
-  const cookiesList = cookieHeader.split(';').map(c => c.trim());
-  const sessionCookie = cookiesList.find(c => c.startsWith('admin_session='));
-  if (sessionCookie) {
-    const token = sessionCookie.split('=')[1];
-    const payload = verifyToken(token);
-    if (payload) return true;
+  // 2. Check admin_session cookie using Next.js headers
+  try {
+    const cookieStore = cookies();
+    const sessionCookie = cookieStore.get('admin_session');
+    if (sessionCookie && sessionCookie.value) {
+      const payload = verifyToken(sessionCookie.value);
+      if (payload) return true;
+    }
+  } catch (error) {
+    // Fallback to case-insensitive manual header check
+    const cookieHeader = request?.headers?.get('Cookie') || request?.headers?.get('cookie') || '';
+    const cookiesList = cookieHeader.split(';').map(c => c.trim());
+    const sessionCookie = cookiesList.find(c => c.startsWith('admin_session='));
+    if (sessionCookie) {
+      const token = sessionCookie.split('=')[1];
+      const payload = verifyToken(token);
+      if (payload) return true;
+    }
   }
 
   return false;
