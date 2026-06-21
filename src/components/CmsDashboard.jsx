@@ -13,6 +13,7 @@ import {
   RotateCw,
   Eye,
   EyeOff,
+  Save,
 } from 'lucide-react';
 import {
   CONTACT_ICON_OPTIONS,
@@ -150,13 +151,16 @@ export default function CmsDashboard({
   previewDevice = 'landscape',
   onPreviewDeviceChange = () => {},
   iframeRef,
-  onIframeLoad
+  onIframeLoad,
+  saveStatus = 'idle',
+  errorMessage = '',
+  onSave
 }) {
   const [activeTab, setActiveTab] = useState('overview');
   const [authForm, setAuthForm] = useState({ username: '', password: '', confirmPassword: '' });
   const [authError, setAuthError] = useState('');
   const [setupMode, setSetupMode] = useState(!credentialsConfigured);
-  const [statusMessage, setStatusMessage] = useState('Changes save automatically to the server.');
+  const [statusMessage, setStatusMessage] = useState('Click "Save Changes" in the top bar to save edits.');
   const [busy, setBusy] = useState(false);
   const fileInputRef = useRef(null);
   const viewportWrapperRef = useRef(null);
@@ -234,7 +238,7 @@ export default function CmsDashboard({
       updater(draft);
       return draft;
     });
-    setStatusMessage('Saved. Public content updated.');
+    setStatusMessage('Unsaved draft updates. Click "Save Changes" to apply.');
   };
 
   const updateArrayItem = (path, index, nextItem) => {
@@ -524,6 +528,20 @@ export default function CmsDashboard({
             <Upload size={16} />
             Import
           </button>
+          <button
+            type="button"
+            className={`cms-header-button cms-header-button--save ${saveStatus === 'saving' ? 'busy' : ''}`}
+            onClick={onSave}
+            disabled={saveStatus === 'saving'}
+            style={{
+              backgroundColor: saveStatus === 'saved' ? 'rgba(106, 140, 26, 0.12)' : saveStatus === 'error' ? 'rgba(192, 48, 48, 0.12)' : 'rgba(65, 91, 6, 0.08)',
+              borderColor: saveStatus === 'saved' ? 'var(--olive)' : saveStatus === 'error' ? '#c03030' : 'var(--olive-mid)',
+              color: saveStatus === 'saved' ? 'var(--olive)' : saveStatus === 'error' ? '#c03030' : 'var(--olive)'
+            }}
+          >
+            <Save size={16} />
+            {saveStatus === 'saving' ? 'Saving...' : saveStatus === 'saved' ? 'Saved!' : 'Save Changes'}
+          </button>
           <button type="button" className="cms-header-button" onClick={onLogout}>
             <LogOut size={16} />
             Logout
@@ -535,7 +553,16 @@ export default function CmsDashboard({
         <input ref={fileInputRef} type="file" accept="application/json" className="cms-hidden-input" onChange={handleImport} />
       </div>
 
-      <div className="cms-status cms-status--sticky">{statusMessage}</div>
+      <div 
+        className={`cms-status cms-status--sticky ${saveStatus === 'error' ? 'cms-status--error' : ''}`}
+        style={saveStatus === 'error' ? { backgroundColor: 'rgba(192, 48, 48, 0.12)', color: '#c03030', borderBottom: '1px solid rgba(192, 48, 48, 0.2)' } : {}}
+      >
+        {saveStatus === 'error' 
+          ? `Error: ${errorMessage}. If deploying to Vercel, make sure you configure your free Upstash database environment variables.` 
+          : saveStatus === 'saved' 
+            ? 'Success! All changes have been permanently saved.' 
+            : statusMessage}
+      </div>
 
       <div className={`cms-layout ${showPreview ? 'with-preview' : ''}`}>
         <aside className="cms-sidebar">

@@ -36,35 +36,38 @@ export default function DashboardWrapper({ initialContent }) {
     }
   }, []);
  
-  // Auto-save content edits back to `/api/portfolio`
+  // Sync draft content to preview iframe instantly on typing
   useEffect(() => {
-    const currentStr = JSON.stringify(content);
-    
-    // Instantly sync the draft content to the preview iframe (typing previews are immediate)
     sendPreviewUpdate(content);
- 
-    if (currentStr === lastSavedContentRef.current) return;
- 
-    const timer = setTimeout(async () => {
-      try {
-        const res = await fetch('/api/portfolio', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: currentStr
-        });
- 
-        if (res.ok) {
-          lastSavedContentRef.current = currentStr;
-        } else {
-          console.error('Auto-save error response:', await res.json());
-        }
-      } catch (err) {
-        console.error('Auto-save communication error:', err);
-      }
-    }, 1000); // 1s debounce
- 
-    return () => clearTimeout(timer);
   }, [content, sendPreviewUpdate]);
+
+  const [saveStatus, setSaveStatus] = useState('idle'); // 'idle' | 'saving' | 'saved' | 'error'
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSave = useCallback(async () => {
+    setSaveStatus('saving');
+    setErrorMessage('');
+    try {
+      const res = await fetch('/api/portfolio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(content)
+      });
+
+      if (res.ok) {
+        lastSavedContentRef.current = JSON.stringify(content);
+        setSaveStatus('saved');
+        setTimeout(() => setSaveStatus('idle'), 3000);
+      } else {
+        const errData = await res.json();
+        setSaveStatus('error');
+        setErrorMessage(errData.error || 'Failed to save changes.');
+      }
+    } catch (err) {
+      setSaveStatus('error');
+      setErrorMessage(err.message || 'Network error.');
+    }
+  }, [content]);
  
   const handleIframeLoad = useCallback(() => {
     sendPreviewUpdate(content);
@@ -117,6 +120,9 @@ export default function DashboardWrapper({ initialContent }) {
         onPreviewDeviceChange={setPreviewDevice}
         iframeRef={iframeRef}
         onIframeLoad={handleIframeLoad}
+        saveStatus={saveStatus}
+        errorMessage={errorMessage}
+        onSave={handleSave}
       />
     </div>
   );
