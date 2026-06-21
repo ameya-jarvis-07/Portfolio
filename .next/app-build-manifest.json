@@ -1,25 +1,42 @@
 {
   "pages": {
-    "/hellothere/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/hellothere/page.js"
+    "/_not-found/page": [
+      "static/chunks/webpack-c2209677aa8e03e0.js",
+      "static/chunks/fd9d1056-a473211090f0e941.js",
+      "static/chunks/117-47a6f050df032dad.js",
+      "static/chunks/main-app-d37f94e31809a7eb.js",
+      "static/chunks/app/_not-found/page-a856e64e54781d3e.js"
     ],
     "/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/layout.css",
-      "static/chunks/app/layout.js"
+      "static/chunks/webpack-c2209677aa8e03e0.js",
+      "static/chunks/fd9d1056-a473211090f0e941.js",
+      "static/chunks/117-47a6f050df032dad.js",
+      "static/chunks/main-app-d37f94e31809a7eb.js",
+      "static/css/5ed9b54c77b4b86f.css",
+      "static/chunks/app/layout-672a65f8556a8102.js"
     ],
     "/welcometocms/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/welcometocms/page.js"
+      "static/chunks/webpack-c2209677aa8e03e0.js",
+      "static/chunks/fd9d1056-a473211090f0e941.js",
+      "static/chunks/117-47a6f050df032dad.js",
+      "static/chunks/main-app-d37f94e31809a7eb.js",
+      "static/chunks/app/welcometocms/page-e76be27008e45c7d.js"
     ],
     "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/chunks/webpack-c2209677aa8e03e0.js",
+      "static/chunks/fd9d1056-a473211090f0e941.js",
+      "static/chunks/117-47a6f050df032dad.js",
+      "static/chunks/main-app-d37f94e31809a7eb.js",
+      "static/chunks/c15bf2b0-7a1b475c41642928.js",
+      "static/chunks/754-de3283362777519b.js",
+      "static/chunks/app/page-925b422b2d62fae1.js"
+    ],
+    "/hellothere/page": [
+      "static/chunks/webpack-c2209677aa8e03e0.js",
+      "static/chunks/fd9d1056-a473211090f0e941.js",
+      "static/chunks/117-47a6f050df032dad.js",
+      "static/chunks/main-app-d37f94e31809a7eb.js",
+      "static/chunks/app/hellothere/page-8cc2b4e64db8c43d.js"
     ]
   }
 }

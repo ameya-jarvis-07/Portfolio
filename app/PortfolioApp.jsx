@@ -10,14 +10,23 @@ import {
   BookOpen,
 } from 'lucide-react';
 
+import dynamic from 'next/dynamic';
 import Navbar from '../src/components/Navbar';
 import HeroSection from '../src/components/HeroSection';
 import AboutSection from '../src/components/AboutSection';
 import ProjectsSection from '../src/components/ProjectsSection';
 import ContactSection from '../src/components/ContactSection';
 import Footer from '../src/components/Footer';
-import Scene3D from '../src/components/Scene3D';
 import useScrollAnimations from '../src/hooks/useScrollAnimations';
+
+const Scene3D = dynamic(() => import('../src/components/Scene3D'), {
+  ssr: false,
+  loading: () => (
+    <div className="loader-container" style={{ position: 'fixed', zIndex: 5 }}>
+      <div className="loader-spinner"></div>
+    </div>
+  )
+});
 import { createDefaultPortfolioContent } from '../src/data/portfolioContent';
 
 /* ─── Icon registry ─── */

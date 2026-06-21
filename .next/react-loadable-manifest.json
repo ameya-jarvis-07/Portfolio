@@ -1,1 +1,18 @@
-{}
+{
+  "app\\PortfolioApp.jsx -> ../src/components/Scene3D": {
+    "id": 6591,
+    "files": [
+      "static/chunks/b536a0f1.7ad2b53f6a9a4232.js",
+      "static/chunks/bd904a5c.ffd6dc4a011851b7.js",
+      "static/chunks/a3cd4a83.785f1597eba6326e.js",
+      "static/chunks/213.f68fa9ae359ec79b.js",
+      "static/chunks/591.e69ced6d30e02895.js"
+    ]
+  },
+  "app\\welcometocms\\DashboardWrapper.jsx -> ../../src/components/CmsDashboard": {
+    "id": 5183,
+    "files": [
+      "static/chunks/183.0a748a616e26d8e7.js"
+    ]
+  }
+}

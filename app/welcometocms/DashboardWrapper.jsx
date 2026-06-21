@@ -1,8 +1,17 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import CmsDashboard from '../../src/components/CmsDashboard';
+import dynamic from 'next/dynamic';
 import { createDefaultPortfolioContent } from '../../src/data/portfolioContent';
+
+const CmsDashboard = dynamic(() => import('../../src/components/CmsDashboard'), {
+  ssr: false,
+  loading: () => (
+    <div className="loader-container">
+      <div className="loader-spinner"></div>
+    </div>
+  )
+});
 
 const heroImage = '/Assets/image.webp';
 const resumeUrl = '/Assets/Resume.pdf';
