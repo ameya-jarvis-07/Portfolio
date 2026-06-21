@@ -7,6 +7,8 @@ import { isAuthenticatedRequest } from '../auth/crypto';
 const DATA_DIR = path.join(process.cwd(), 'data');
 const CONTENT_FILE = path.join(DATA_DIR, 'portfolioContent.json');
 
+const useKV = !!(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
+
 async function ensureDataDir() {
   try {
     await fs.mkdir(DATA_DIR, { recursive: true });
@@ -16,19 +18,40 @@ async function ensureDataDir() {
 }
 
 async function getPortfolioData() {
-  await ensureDataDir();
+  const defaults = createDefaultPortfolioContent({
+    heroImage: '/Assets/image.webp',
+    resumeUrl: '/Assets/Resume.pdf'
+  });
+
+  let localData;
   try {
     const raw = await fs.readFile(CONTENT_FILE, 'utf-8');
-    return JSON.parse(raw);
+    localData = JSON.parse(raw);
   } catch (error) {
-    // File doesn't exist or is invalid, initialize with defaults
-    const defaults = createDefaultPortfolioContent({
-      heroImage: '/Assets/image.webp',
-      resumeUrl: '/Assets/Resume.pdf'
-    });
-    await fs.writeFile(CONTENT_FILE, JSON.stringify(defaults, null, 2), 'utf-8');
-    return defaults;
+    localData = defaults;
   }
+
+  if (useKV) {
+    try {
+      const res = await fetch(`${process.env.KV_REST_API_URL}/get/portfolio_content`, {
+        headers: {
+          Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}`
+        },
+        cache: 'no-store'
+      });
+      if (res.ok) {
+        const body = await res.json();
+        if (body.result) {
+          return typeof body.result === 'string' ? JSON.parse(body.result) : body.result;
+        }
+      }
+    } catch (error) {
+      console.error('Failed to read from Vercel KV, falling back to local file:', error);
+    }
+    return localData;
+  }
+
+  return localData;
 }
 
 export async function GET() {
@@ -49,6 +72,21 @@ export async function POST(request) {
     const payload = await request.json();
     if (!payload || typeof payload !== 'object') {
       return NextResponse.json({ error: 'Invalid payload structure' }, { status: 400 });
+    }
+
+    if (useKV) {
+      const res = await fetch(`${process.env.KV_REST_API_URL}/set/portfolio_content`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(JSON.stringify(payload))
+      });
+      if (!res.ok) {
+        throw new Error('KV Store returned non-OK response: ' + res.statusText);
+      }
+      return NextResponse.json(payload);
     }
 
     await ensureDataDir();

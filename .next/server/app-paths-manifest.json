@@ -1,1 +1,7 @@
-{}
+{
+  "/hellothere/page": "app/hellothere/page.js",
+  "/api/auth/route": "app/api/auth/route.js",
+  "/welcometocms/page": "app/welcometocms/page.js",
+  "/page": "app/page.js",
+  "/api/portfolio/route": "app/api/portfolio/route.js"
+}
