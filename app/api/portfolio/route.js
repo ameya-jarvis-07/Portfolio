@@ -42,7 +42,22 @@ export async function getPortfolioData() {
       if (res.ok) {
         const body = await res.json();
         if (body.result) {
-          return typeof body.result === 'string' ? JSON.parse(body.result) : body.result;
+          let data = body.result;
+          if (typeof data === 'string') {
+            try {
+              data = JSON.parse(data);
+            } catch (e) {
+              console.error('Failed first parse of KV result:', e);
+            }
+          }
+          if (typeof data === 'string') {
+            try {
+              data = JSON.parse(data);
+            } catch (e) {
+              console.error('Failed second parse of KV result:', e);
+            }
+          }
+          return data;
         }
       }
     } catch (error) {
@@ -81,7 +96,7 @@ export async function POST(request) {
           Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(JSON.stringify(payload))
+        body: JSON.stringify(payload)
       });
       if (!res.ok) {
         throw new Error('KV Store returned non-OK response: ' + res.statusText);

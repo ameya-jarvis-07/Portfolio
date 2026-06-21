@@ -564,7 +564,6 @@ input, textarea {
   align-items: center;
   padding: 4rem 2rem 6rem;
   position: relative;
-  overflow-x: hidden;
 }
 
 .section-hero::before,
