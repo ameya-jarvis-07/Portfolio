@@ -1,0 +1,305 @@
+{
+  "site": {
+    "brand": "JARVIS",
+    "ownerName": "Ameya Ramteke",
+    "role": "AI · Data · Web"
+  },
+  "hero": {
+    "eyebrow": "AI & Data Science",
+    "name": "Ameya Ramteke",
+    "title": "AI & DS Engineer",
+    "subtitle": "Building intelligent solutions with Python, Machine Learning, and Cloud Architecture.",
+    "image": "/Assets/image.webp",
+    "resumeUrl": "/Assets/Resume.pdf",
+    "buttons": {
+      "primaryLabel": "View Projects",
+      "secondaryLabel": "Download Resume"
+    },
+    "highlights": [
+      "AI/ML and data analysis focus",
+      "Cloud architecture and full-stack builds",
+      "Open to internships and collaborations"
+    ],
+    "stats": [
+      {
+        "id": "stat-projects",
+        "value": "4+",
+        "label": "Major Projects"
+      },
+      {
+        "id": "stat-certs",
+        "value": "5+",
+        "label": "Certifications"
+      },
+      {
+        "id": "stat-lead",
+        "value": "Team",
+        "label": "Lead & Rep"
+      },
+      {
+        "id": "stat-specialty",
+        "value": "AI/DS",
+        "label": "Specialization"
+      }
+    ]
+  },
+  "about": {
+    "profileName": "Ameya Ramteke",
+    "profileTitle": "AI & Data Science Engineer",
+    "bio": "AI/DS engineer building ML pipelines, data products, and cloud-native apps that ship fast.",
+    "location": "Nagpur, India",
+    "availability": "Open to work",
+    "technicalFocus": "Focused on AI/ML, analytics, and production-ready full-stack builds with a cloud-first mindset.",
+    "locationCity": "Nagpur",
+    "timezone": "GMT+5:30",
+    "mapUrl": "https://www.openstreetmap.org/export/embed.html?bbox=79.0506%2C21.1200%2C79.1106%2C21.1800&layer=mapnik&marker=21.150037219633752%2C79.08060139999999",
+    "skillBars": [
+      {
+        "id": "skill-python",
+        "label": "Python & AI/ML",
+        "value": 90,
+        "color": "cyan"
+      },
+      {
+        "id": "skill-data",
+        "label": "Data Analysis (SQL/EDA)",
+        "value": 85,
+        "color": "purple"
+      },
+      {
+        "id": "skill-web",
+        "label": "Web Dev (HTML/CSS/JS)",
+        "value": 80,
+        "color": "pink"
+      },
+      {
+        "id": "skill-cloud",
+        "label": "Cloud Architecture",
+        "value": 75,
+        "color": "yellow"
+      }
+    ],
+    "education": [
+      {
+        "id": "edu-degree",
+        "title": "B. Tech in AI & Data Science",
+        "place": "Anjuman College of Engineering & Technology",
+        "status": "Pursuing"
+      },
+      {
+        "id": "edu-school",
+        "title": "HSC & SSC",
+        "place": "Sandipani School / Essence International School",
+        "status": ""
+      }
+    ],
+    "certifications": [
+      {
+        "id": "cert-tata",
+        "label": "GenAI Powered Data Analytics (TATA)"
+      },
+      {
+        "id": "cert-deloitte",
+        "label": "Data Analytics Job Simulation (Deloitte)"
+      },
+      {
+        "id": "cert-aws",
+        "label": "Solutions Architecture (AWS)"
+      },
+      {
+        "id": "cert-git",
+        "label": "Git & GitHub Workshop (ACET)"
+      },
+      {
+        "id": "cert-sql",
+        "label": "SQL and Relational Databases 101 (Cognitive Class)"
+      },
+      {
+        "id": "cert-prompt",
+        "label": "Prompt Engineering for Everyone (Cognitive Class)"
+      },
+      {
+        "id": "cert-claude",
+        "label": "Claude 101 (Anthropic)"
+      }
+    ]
+  },
+  "projects": [
+    {
+      "id": "project-resume-checker",
+      "title": "Resume-Checker",
+      "description": "A system to parse, analyze, and score resumes, showing skills in data extraction and analysis.",
+      "tags": [
+        "Python",
+        "NLP"
+      ],
+      "accent": "cyan",
+      "iconKey": "file-text",
+      "link": "https://github.com/ameya-jarvis-07/Resume-Checker",
+      "image": ""
+    },
+    {
+      "id": "project-crime-analysis",
+      "title": "Crime-Analysis-Demo",
+      "description": "Crime dataset analysis to identify patterns and trends using Python and visualization techniques.",
+      "tags": [
+        "Data Viz",
+        "Pandas"
+      ],
+      "accent": "purple",
+      "iconKey": "bar-chart",
+      "link": "https://github.com/ameya-jarvis-07/Crime-Analysis-Demo",
+      "image": ""
+    },
+    {
+      "id": "project-account-management",
+      "title": "Account-Management",
+      "description": "Full-stack CRUD app for user account management, demonstrating database and UI skills.",
+      "tags": [
+        "Full Stack",
+        "SQL"
+      ],
+      "accent": "green",
+      "iconKey": "users",
+      "link": "https://github.com/ameya-jarvis-07/Account-Management-System",
+      "image": ""
+    },
+    {
+      "id": "project-hunger-bridge",
+      "title": "Hunger-Bridge",
+      "description": "A socially focused project that connects food donors with organizations to reduce food waste.",
+      "tags": [
+        "Social Good",
+        "Web App"
+      ],
+      "accent": "yellow",
+      "iconKey": "heart",
+      "link": "https://github.com/ameya-jarvis-07/Hunger-Bridge",
+      "image": ""
+    },
+    {
+      "id": "project-solar-explorer",
+      "title": "Solar-Explorer",
+      "description": "Interactive solar system exploration tool with real-time planetary data and 3D rendering.",
+      "tags": [
+        "3D Graphics",
+        "Web Dev"
+      ],
+      "accent": "orange",
+      "iconKey": "sun",
+      "link": "https://ameya-jarvis-07.github.io/Solar-Explorer/",
+      "image": ""
+    },
+    {
+      "id": "project-neuronet",
+      "title": "Neuro.Net",
+      "description": "Youth-driven workshops on psychology and artificial intelligence.",
+      "tags": [
+        "Education",
+        "Algorithms"
+      ],
+      "accent": "blue",
+      "iconKey": "book-open",
+      "link": "https://neuronet.co.in",
+      "image": ""
+    }
+  ],
+  "contact": {
+    "eyebrow": "Let’s talk",
+    "title": "Get In Touch",
+    "subtitle": "Have a project in mind or looking for a collaborator? Send a message and I’ll reply soon.",
+    "links": [
+      {
+        "id": "contact-linkedin",
+        "iconKey": "linkedin",
+        "title": "LinkedIn",
+        "text": "ameya-ramteke",
+        "href": "https://www.linkedin.com/in/ameya-ramteke"
+      },
+      {
+        "id": "contact-email",
+        "iconKey": "mail",
+        "title": "Email Me",
+        "text": "ameyaramteke07.work@gmail.com",
+        "href": "mailto:ameyaramteke07.work@gmail.com"
+      },
+      {
+        "id": "contact-phone",
+        "iconKey": "phone",
+        "title": "Call Me",
+        "text": "+91 9422651580",
+        "href": "tel:+919422651580"
+      },
+      {
+        "id": "contact-location",
+        "iconKey": "map-pin",
+        "title": "Location",
+        "text": "Nagpur, India (440023)",
+        "href": "#contact"
+      }
+    ],
+    "emailjs": {
+      "serviceId": "service_tbdm0d2",
+      "templateId": "template_pch5iiw",
+      "publicKey": "CtQwEFyX5Kq-7gqmJ"
+    }
+  },
+  "footer": {
+    "brand": "JARVIS",
+    "name": "Ameya Ramteke",
+    "tagline": "AI · Data · Web",
+    "quickLinks": [
+      {
+        "id": "footer-home",
+        "label": "Home",
+        "href": "#home"
+      },
+      {
+        "id": "footer-about",
+        "label": "About",
+        "href": "#about"
+      },
+      {
+        "id": "footer-projects",
+        "label": "Projects",
+        "href": "#projects"
+      },
+      {
+        "id": "footer-contact",
+        "label": "Contact",
+        "href": "#contact"
+      },
+      {
+        "id": "footer-resume",
+        "label": "Resume",
+        "href": "/Assets/Resume.pdf"
+      }
+    ],
+    "socialLinks": [
+      {
+        "id": "social-email",
+        "iconKey": "mail",
+        "label": "Email",
+        "href": "mailto:ameyaramteke07.work@gmail.com"
+      },
+      {
+        "id": "social-github",
+        "iconKey": "github",
+        "label": "GitHub",
+        "href": "https://github.com/ameya-jarvis-07"
+      },
+      {
+        "id": "social-linkedin",
+        "iconKey": "linkedin",
+        "label": "LinkedIn",
+        "href": "https://www.linkedin.com/in/ameya-jarvis-07/"
+      },
+      {
+        "id": "social-linktree",
+        "iconKey": "external-link",
+        "label": "LinkTree",
+        "href": "https://linktr.ee/ameya_jarvis"
+      }
+    ]
+  }
+}
